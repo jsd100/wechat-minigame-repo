@@ -1,0 +1,34 @@
+# macOS and local credentials
+.DS_Store
+.env
+.env.*
+!.env.example
+!.env.*.example
+project.private.config.json
+
+# Installed dependencies, local tools, and automation evidence
+node_modules/
+__pycache__/
+/.pnpm-store/
+/.playwright-mcp/
+/.superpowers/sdd/
+/.tooling/apps/
+/.tooling/npm-cache/
+/.tooling/local/
+/.tooling/vendor/
+/.tooling/skills/
+
+# Machine-local Agent settings. Share the adjacent example files.
+/.codex/config.toml
+/.cursor/mcp.json
+/.gemini/settings.json
+/.mcp.json
+/.qwen/settings.json
+/opencode.json
+
+# Generated Cocos outputs and user-specific editor state
+/cocos-game/build/
+/cocos-game/library/
+/cocos-game/local/
+/cocos-game/profiles/
+/cocos-game/temp/

@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "weixin-minigame-helper": {
+      "command": "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp",
+      "args": [
+        "minigame"
+      ]
+    },
+    "cloudbase": {
+      "command": "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp",
+      "args": [
+        "cloudbase"
+      ]
+    },
+    "cocos-creator": {
+      "type": "http",
+      "url": "http://127.0.0.1:3000/mcp"
+    },
+    "wechat-devtools": {
+      "command": "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp",
+      "args": [
+        "wechatide"
+      ]
+    }
+  }
+}

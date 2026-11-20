@@ -1,0 +1,29 @@
+{
+  "servers": {
+    "weixin-minigame-helper": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.tooling/bin/mini-ai-mcp",
+      "args": [
+        "minigame"
+      ]
+    },
+    "cloudbase": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.tooling/bin/mini-ai-mcp",
+      "args": [
+        "cloudbase"
+      ]
+    },
+    "cocos-creator": {
+      "type": "http",
+      "url": "http://127.0.0.1:3000/mcp"
+    },
+    "wechat-devtools": {
+      "type": "stdio",
+      "command": "${workspaceFolder}/.tooling/bin/mini-ai-mcp",
+      "args": [
+        "wechatide"
+      ]
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "wechat-local-development-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shared local tooling for WeChat Mini Programs and Mini Games",
+  "dependencies": {
+    "@cloudbase/cloudbase-mcp": "2.37.9",
+    "@weadmin/weixin-minigame-helper-mcp": "0.1.45",
+    "minigame-api-typings": "3.8.22",
+    "miniprogram-api-typings": "5.3.1",
+    "miniprogram-automator": "0.13.0",
+    "miniprogram-ci": "2.1.31",
+    "miniprogram-simulate": "1.7.0",
+    "tdesign-miniprogram": "1.18.0",
+    "typescript": "5.9.3"
+  }
+}

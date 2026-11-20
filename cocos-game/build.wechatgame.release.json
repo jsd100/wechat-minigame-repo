@@ -1,0 +1,12 @@
+{
+  "platform": "wechatgame",
+  "outputName": "wechatgame-breakfast-release",
+  "buildPath": "project://build",
+  "debug": false,
+  "packages": {
+    "wechatgame": {
+      "appid": "wx136b6cd4db8ee9c0",
+      "orientation": "portrait"
+    }
+  }
+}

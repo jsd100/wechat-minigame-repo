@@ -1,0 +1,39 @@
+#!/bin/sh
+set -eu
+
+tooling_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+node_path=$(command -v node || true)
+if [ -z "$node_path" ] && [ -r "$tooling_dir/local/node-path" ]; then
+    IFS= read -r node_path < "$tooling_dir/local/node-path"
+fi
+
+case "${1:-}" in
+    minigame)
+        module="@weadmin/weixin-minigame-helper-mcp/mcp/index.js"
+        ;;
+    cloudbase)
+        module="@cloudbase/cloudbase-mcp/dist/cli.cjs"
+        ;;
+    wechatide)
+        token=${WECHAT_IDE_MCP_TOKEN:-}
+        if [ -z "$token" ] && [ -r "$tooling_dir/local/wechat-mcp-token" ]; then
+            token=$(cat "$tooling_dir/local/wechat-mcp-token")
+        fi
+        if [ -z "$token" ]; then
+            echo "Copy the MCP config from WeChat DevTools Settings > Security to set the MCP token." >&2
+            exit 1
+        fi
+        exec /usr/local/bin/wechatide mcp "--token=$token"
+        ;;
+    *)
+        echo "Usage: mini-ai-mcp minigame|cloudbase|wechatide" >&2
+        exit 2
+        ;;
+esac
+
+if [ -z "$node_path" ] || [ ! -x "$node_path" ]; then
+    echo "Node.js is unavailable. Configure this client's PATH or .tooling/local/node-path." >&2
+    exit 1
+fi
+
+exec "$node_path" "$tooling_dir/node_modules/$module"

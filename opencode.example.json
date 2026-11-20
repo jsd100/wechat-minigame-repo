@@ -1,0 +1,31 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "weixin-minigame-helper": {
+      "type": "local",
+      "command": [
+        "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp",
+        "minigame"
+      ]
+    },
+    "cloudbase": {
+      "type": "local",
+      "command": [
+        "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp",
+        "cloudbase"
+      ]
+    },
+    "cocos-creator": {
+      "type": "remote",
+      "url": "http://127.0.0.1:3000/mcp",
+      "oauth": false
+    },
+    "wechat-devtools": {
+      "type": "local",
+      "command": [
+        "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp",
+        "wechatide"
+      ]
+    }
+  }
+}

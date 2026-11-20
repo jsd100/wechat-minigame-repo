@@ -1,0 +1,18 @@
+[mcp_servers.weixin-minigame-helper]
+command = "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp"
+args = ["minigame"]
+startup_timeout_sec = 30
+
+[mcp_servers.cloudbase]
+command = "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp"
+args = ["cloudbase"]
+startup_timeout_sec = 30
+
+[mcp_servers.cocos-creator]
+url = "http://127.0.0.1:3000/mcp"
+startup_timeout_sec = 10
+
+[mcp_servers.wechat-devtools]
+command = "/absolute/path/to/mini-program-temp/.tooling/bin/mini-ai-mcp"
+args = ["wechatide"]
+enabled = true
