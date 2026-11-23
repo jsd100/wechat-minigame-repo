@@ -1,0 +1,9 @@
+{
+  "name": "breakfast-startup",
+  "title": "早餐摊微信启动页",
+  "version": "1.0.0",
+  "package_version": 2,
+  "contributions": {
+    "builder": "./builder.js"
+  }
+}

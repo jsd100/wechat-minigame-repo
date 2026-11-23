@@ -90,3 +90,10 @@
 
 - 按[开发排障与测试手册](../../开发排障与测试手册.md)直接执行 Cocos MCP 只读查询、发布构建、TypeScript 检查和 33 项自动测试。Playwright 的示例在 Creator 本地浏览器环境中点开齿轮并截图，确认预览工具栏需要在脚本里隐藏，避免它截走短视口的触控。
 - 本轮微信工具最初报告触控成功，但截图连续返回旧结算帧。看完控制台后重新触发一次刷新，用 612×1330 原始 PNG 确认已开新局。同一格式下实点第 12 关 A 单、将油条放进左碟，再撤回至原位。记录位于本机 `.tooling/local/breakfast-qa.VRmYd4/`，关键文件为 `05-recovery.png`、`06-staged.png`、`07-undo.png`、`creator-settings.png`、`build.log` 和 `console-final.json`。
+
+## 小摊开工单与设置 · 2026-11-20
+
+- Cocos Creator 3.8.8 完成微信发布包构建，TypeScript 检查和 35 项自动测试通过。CLI 日志记录第二个 Cocos MCP 实例的 3000 端口冲突，已打开的 Creator MCP 可读本工程与主场景，CLI 构建成功结束。
+- 微信模拟器逐步验证点问号、点被挡茶叶蛋、米糕入碟、茶叶蛋露出、盖「齐」章、自动补 B 单和重玩。设置可点整行切换，关闭动效后可以直接做完同一试玩。两项开关刷新后保留，随后已恢复原偏好。
+- 第 7 关把米糕放入左碟后，打开帮助并操作试玩，再点遮罩退出。退出后 A 单进度和左碟米糕仍在。正式关的 A 单封袋后，米糕自动补入 B 单，两单最终领到「热乎出摊」结算。
+- 证据位于本机 `.tooling/local/breakfast-interactions.DmTB5X/`。`02-help.jpg` 至 `06-replay.jpg` 是完整帮助流程，`14-persisted-settings.jpg` 是设置刷新后状态，`18-level7-tray.jpg`、`20-level7-resumed.jpg`、`21-level7-handoff.jpg` 和 `22-level7-won.jpg` 是第 7 关验收。微信控制台的错误关键词过滤没有命中。本轮未实测手机。

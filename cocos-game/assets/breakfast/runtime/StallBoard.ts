@@ -20,6 +20,7 @@ interface FoodDisplay {
     readonly projectedBottom: number;
     readonly mesh: Mesh;
     readonly marker: Node;
+    readonly markerScale: Vec3;
     readonly shadow: Node;
 }
 
@@ -37,7 +38,7 @@ export class StallBoard {
     private trayTop = 0;
     private readonly trayPositions = [new Vec3(-TRAY_SPACING, .204, TRAY_DEPTH), new Vec3(TRAY_SPACING, .204, TRAY_DEPTH)];
     private readonly stagedScale = new Vec3(.70, .70, .70);
-    private readonly bags = new Map<string, { node: Node; fold: Node }>();
+    private readonly bags = new Map<string, { node: Node; fold: Node; stamp: Node }>();
     reducedMotion = false;
 
     constructor(private readonly root: Node, private readonly camera: Camera, effect: EffectAsset, unlit: EffectAsset,
@@ -118,7 +119,8 @@ export class StallBoard {
                 this.foodBottomByMesh.set(mesh, bottom);
             }
             this.display.set(food.id, {
-                node, home, mesh, marker, shadow, baseDepth: home.z, projectedBottom: bottom + Vec3.dot(home, this.cameraUp),
+                node, home, mesh, marker, markerScale: marker.scale.clone(), shadow, baseDepth: home.z,
+                projectedBottom: bottom + Vec3.dot(home, this.cameraUp),
             });
         }
     }
@@ -160,8 +162,7 @@ export class StallBoard {
     }
 
     play(result: ActionResult, onReady: () => void, onSeal: (orderId: string) => void): void {
-        const duration = this.reducedMotion ? 0 : 0.19;
-        if (!duration || !result.events.length) {
+        if (this.reducedMotion || !result.events.length) {
             this.render(result.state);
             onReady();
             return;
@@ -171,9 +172,11 @@ export class StallBoard {
         for (const event of result.events) {
             switch (event.type) {
                 case 'toOrder':
-                case 'toTray':
+                case 'toTray': {
+                    const duration = event.type === 'toTray' ? .28 : .22;
                     timeline.call(() => this.animateFood(event, result.state, duration)).delay(duration);
                     break;
+                }
                 case 'revealed':
                     timeline.call(() => this.highlight([event.foodId]));
                     break;
@@ -181,7 +184,7 @@ export class StallBoard {
                     timeline.call(() => {
                         this.animateSeal(event.orderId);
                         onSeal(event.orderId);
-                    }).delay(0.1);
+                    }).delay(.20);
                     break;
             }
         }
@@ -199,11 +202,17 @@ export class StallBoard {
         const target = tray >= 0 ? this.trayPositions[tray] : new Vec3(move.type === 'toOrder' && move.orderId === 'B' ? 1.15 : -1.15, 2.53, -1.75);
         const peak = entry.node.position.clone().lerp(target, 0.4);
         peak.y += 0.53;
-        tween(entry.node)
-            .to(duration * 0.41, { position: peak, scale: new Vec3(1.07, 1.07, 1.07) }, { easing: 'quadOut' })
-            .to(duration * 0.59, { position: target, scale: tray >= 0 ? this.stagedScale : packedScale }, { easing: 'quadIn' })
-            .call(() => { if (tray < 0) entry.node.active = false; })
-            .start();
+        const flight = tween(entry.node)
+            .to(duration * .35, { position: peak, scale: new Vec3(1.07, 1.07, 1.07) }, { easing: 'quadOut' });
+        if (tray >= 0) {
+            const squash = new Vec3(this.stagedScale.x * 1.08, this.stagedScale.y * .89, this.stagedScale.z * 1.08);
+            flight.to(duration * .40, { position: target, scale: squash }, { easing: 'quadIn' })
+                .to(duration * .25, { scale: this.stagedScale }, { easing: 'backOut' });
+        } else {
+            flight.to(duration * .65, { position: target, scale: packedScale }, { easing: 'quadIn' })
+                .call(() => { entry.node.active = false; });
+        }
+        flight.start();
     }
 
     private animateSeal(orderId: string): void {
@@ -211,17 +220,28 @@ export class StallBoard {
         if (!bag) return;
         bag.node.active = true;
         bag.fold.setRotationFromEuler(-64, 0, 0);
-        tween(bag.fold).to(0.17, { eulerAngles: new Vec3(13, 0, 0) }, { easing: 'quadOut' })
-            .to(0.12, { eulerAngles: new Vec3(0, 0, 0) }, { easing: 'quadInOut' }).start();
+        tween(bag.fold).to(.13, { eulerAngles: new Vec3(8, 0, 0) }, { easing: 'quadOut' })
+            .to(.07, { eulerAngles: new Vec3(0, 0, 0) }, { easing: 'quadInOut' }).start();
+        const stamped = bag.stamp.scale.clone();
+        bag.stamp.setScale(0, 0, stamped.z);
+        tween(bag.stamp).delay(.08).to(.12, { scale: stamped }, { easing: 'backOut' }).start();
     }
 
     highlight(ids: readonly string[]): void {
         for (const id of ids) {
-            const marker = this.display.get(id)?.marker;
-            if (!marker) continue;
+            const entry = this.display.get(id);
+            if (!entry) continue;
+            const { marker, markerScale } = entry;
             Tween.stopAllByTarget(marker);
             marker.active = true;
-            tween(marker).delay(0.65).call(() => { marker.active = false; }).start();
+            marker.setScale(markerScale);
+            const pulse = tween(marker);
+            if (!this.reducedMotion) {
+                const expanded = new Vec3(markerScale.x * 1.12, markerScale.y, markerScale.z * 1.12);
+                pulse.to(.12, { scale: expanded }, { easing: 'quadOut' })
+                    .to(.14, { scale: markerScale }, { easing: 'quadInOut' });
+            }
+            pulse.delay(.45).call(() => { marker.active = false; }).start();
         }
     }
 
@@ -235,6 +255,8 @@ export class StallBoard {
         for (const bag of this.bags.values()) {
             Tween.stopAllByTarget(bag.fold);
             bag.fold.setRotationFromEuler(0, 0, 0);
+            Tween.stopAllByTarget(bag.stamp);
+            bag.stamp.setScale(.135, .065, .010);
         }
     }
 
@@ -265,17 +287,17 @@ export class StallBoard {
         return projectYBounds(positions, this.cameraUp.y, this.cameraUp.z * depthScale);
     }
 
-    private makeBag(x: number): { node: Node; fold: Node } {
+    private makeBag(x: number): { node: Node; fold: Node; stamp: Node } {
         const node = new Node('纸袋');
         node.setParent(this.counter);
         node.setPosition(x, .01, 1.28);
         this.art.contactShadow(node, [.075, -.003, .076], [1.3, 1, .82]);
         this.art.bag(node);
         this.art.piece(node, 'box', '#f5d8a0', [0, .30, .257], [.27, .20, .018]);
-        this.art.piece(node, 'box', '#a15037', [0, .30, .268], [.135, .065, .010]);
+        const stamp = this.art.piece(node, 'box', '#a15037', [0, .30, .268], [.135, .065, .010]);
         const fold = this.art.piece(node, 'box', '#f1c897', [0, .638, .04], [.657, .044, .382]);
         node.active = false;
-        return { node, fold };
+        return { node, fold, stamp };
     }
 
 }

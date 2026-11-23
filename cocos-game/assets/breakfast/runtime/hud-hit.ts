@@ -1,6 +1,9 @@
 import type { GameAction } from '../core/types';
+import type { HelpFood } from './help-demo';
 
-export type HudAction = GameAction | { type: 'next' | 'previous' | 'sound' | 'motion' | 'settings' };
+export type HudAction = GameAction
+    | { type: 'next' | 'previous' | 'sound' | 'motion' | 'settings' | 'help' | 'close-dialog' | 'help-replay' }
+    | { type: 'help-take'; foodId: HelpFood };
 
 export interface HitArea {
     x: number;
@@ -22,7 +25,7 @@ export function resolveHudHit(
     if (modal) {
         const control = modal.controls.find(contains);
         if (control?.action) return control.action;
-        return contains(modal.panel) ? 'ignore' : { type: 'settings' };
+        return contains(modal.panel) ? 'ignore' : { type: 'close-dialog' };
     }
     const area = areas.find(contains);
     return area ? area.action ?? 'ignore' : null;

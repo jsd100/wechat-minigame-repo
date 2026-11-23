@@ -235,7 +235,7 @@ npm run build
 4. 首次给 Agent 的任务是读取当前场景和节点树、截图，再修改一个测试节点的位置。检查编辑器实际值和文件改动。
 5. Creator「项目 → 构建发布」选择「微信小游戏」，用微信开发者工具打开构建产物。3D 项目先测摄像机、纹理、音频和切后台恢复，再逐步增加场景和素材。 [Creator 下载入口](https://www.cocos.com/creator) · [harady 扩展安装](https://github.com/harady/cocos-creator-mcp#quick-start) · [DaxianLee 扩展](https://github.com/DaxianLee/cocos-mcp-server) · [微信构建](https://docs.cocos.com/creator/3.8/manual/zh/editor/publish/publish-wechatgame.html) · [微信端性能](https://docs.cocos.com/creator/3.8/manual/zh/editor/publish/ios/optimize.html)
 
-本仓库的《摊位凑一单》可从仓库根目录运行 `npm --prefix cocos-game run build:wechatgame`，生成 `cocos-game/build/wechatgame-breakfast-release/`。本机 Creator 路径及调试模式见[环境使用说明的构建章节](环境使用说明.md#构建微信小游戏)。
+本仓库的《早点凑一单》可从仓库根目录运行 `npm --prefix cocos-game run build:wechatgame`，生成 `cocos-game/build/wechatgame-breakfast-release/`。本机 Creator 路径及调试模式见[环境使用说明的构建章节](环境使用说明.md#构建微信小游戏)。
 
 ### 5.3 LayaAir，2D／3D 与官方 AI 工具
 

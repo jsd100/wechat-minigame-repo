@@ -1,5 +1,5 @@
 const { spawnSync } = require('node:child_process');
-const { statSync } = require('node:fs');
+const { readFileSync, statSync } = require('node:fs');
 const path = require('node:path');
 
 const projectDir = path.resolve(__dirname, '..');
@@ -27,12 +27,18 @@ if (result.status !== 36) {
     process.exit(result.status || 1);
 }
 
-for (const filename of ['game.js', 'game.json', 'project.config.json']) {
+for (const filename of ['game.js', 'game.json', 'project.config.json', 'first-screen.js', 'breakfast-start.jpg']) {
     const file = path.join(outputDir, filename);
     if (!statSync(file, { throwIfNoEntry: false })?.isFile()) {
         console.error(`微信小游戏构建产物缺少 ${file}`);
         process.exit(1);
     }
+}
+
+const firstScreen = readFileSync(path.join(outputDir, 'first-screen.js'), 'utf8');
+if (!firstScreen.includes('let bgName = "breakfast-start.jpg";') || !firstScreen.includes('let useLogo = false;')) {
+    console.error('微信小游戏构建未应用自定义启动页，请检查早餐摊微信启动页扩展是否启用。');
+    process.exit(1);
 }
 
 console.log(`微信小游戏发布包已生成于 ${outputDir}`);

@@ -6,6 +6,8 @@ import { LEVELS } from '../core/levels';
 import { applyAction, createGame, getBlockers } from '../core/rules';
 import type { GameAction, GameState, Rejection } from '../core/types';
 import { layoutFooter } from './footer-layout';
+import { createHelpDemo } from './help-demo';
+import type { HelpFood } from './help-demo';
 import { OrderHud } from './OrderHud';
 import { showHandoff } from './order-presentation';
 import { loadProgress, recordWin, saveProgress } from './progress';
@@ -35,7 +37,10 @@ export class BreakfastGame extends Component {
     private handoff: GameState | null = null;
     private progress: Progress;
     private curtain = false;
-    private settingsOpen = false;
+    private dialog?: 'help' | 'settings';
+    private helpState = createHelpDemo();
+    private helpNotice = '';
+    private helpBusy = false;
     private notice = '';
     private audio: AudioSource;
     private clips = new Map<string, AudioClip>();
@@ -85,6 +90,10 @@ export class BreakfastGame extends Component {
         this.board = new StallBoard(this.node, this.boardCamera, this.surfaceEffect, this.unlitEffect, this.foodTexture);
         this.hud = new OrderHud(hudRoot);
         this.hud.setIconAtlas(this.foodTexture);
+        resources.load('breakfast-art/opening-bun/texture', Texture2D, (error, texture) => {
+            if (error) console.warn('开工单包子图标加载失败', error);
+            else if (this.isValid) this.hud.setHelpBadge(texture);
+        });
         resources.load('breakfast-art/morning-stall/texture', Texture2D, (error, texture) => {
             if (!this.isValid) return;
             if (error) console.error('早餐摊背景加载失败', error);
@@ -128,6 +137,7 @@ export class BreakfastGame extends Component {
         const { trayLabelY, trayScale } = layoutFooter(width, height, sys.getSafeAreaRect(false).y);
         this.board.resizeTray(height, trayLabelY, trayScale);
         this.renderHud();
+        this.renderDialog();
     }
 
     private openLevel(id: number): void {
@@ -164,17 +174,38 @@ export class BreakfastGame extends Component {
                 case 'sound':
                     this.progress = { ...this.progress, sound: !this.progress.sound };
                     saveProgress(sys.localStorage, this.progress);
-                    this.renderHud();
+                    this.renderDialog();
                     return;
                 case 'motion':
                     this.progress = { ...this.progress, reduceMotion: !this.progress.reduceMotion };
                     this.board.reducedMotion = this.progress.reduceMotion;
                     saveProgress(sys.localStorage, this.progress);
-                    this.renderHud();
+                    if (this.progress.reduceMotion && this.busy) {
+                        this.cancelPresentation();
+                        this.board.render(this.state);
+                        this.curtain = this.state.status === 'won';
+                        this.renderHud();
+                    }
+                    this.renderDialog();
                     return;
+                case 'help':
                 case 'settings':
-                    this.settingsOpen = !this.settingsOpen;
-                    this.renderHud();
+                    this.dialog = action.type;
+                    this.taps.reset();
+                    if (action.type === 'help') this.resetHelp();
+                    this.renderDialog(true);
+                    return;
+                case 'close-dialog':
+                    this.dialog = undefined;
+                    this.taps.reset();
+                    this.renderDialog();
+                    return;
+                case 'help-replay':
+                    this.resetHelp();
+                    this.renderDialog();
+                    return;
+                case 'help-take':
+                    this.takeHelpFood(action.foodId);
                     return;
                 default:
                     if (action.type === 'select' || action.type === 'restart' || action.type === 'undo') this.dispatch(action);
@@ -256,9 +287,44 @@ export class BreakfastGame extends Component {
         if (this.progress.sound && clip) this.audio.playOneShot(clip, 0.69);
     }
 
+    private resetHelp(): void {
+        this.helpState = createHelpDemo();
+        this.helpNotice = '';
+    }
+
+    private takeHelpFood(foodId: HelpFood): void {
+        if (this.helpBusy || this.dialog !== 'help') return;
+        const result = applyAction(this.helpState, { type: 'take', foodId });
+        if (result.rejection) {
+            if (result.rejection === 'blocked') {
+                this.helpNotice = '还拿不到茶叶蛋，先挪开前面的米糕。';
+                this.renderDialog();
+                if (!this.progress.reduceMotion) this.hud.nudgeHelpRice();
+            }
+            return;
+        }
+
+        this.helpState = result.state;
+        this.helpNotice = '';
+        const goesToTray = result.events.some(({ type }) => type === 'toTray');
+        if (this.progress.reduceMotion) {
+            this.playSound(goesToTray ? 'tray' : 'sealed');
+            this.renderDialog();
+            return;
+        }
+        this.helpBusy = true;
+        this.playSound('select');
+        this.hud.playHelp(result.events, (cue) => this.playSound(cue), () => {
+            this.renderDialog();
+            if (goesToTray) this.hud.settleHelpRice();
+        });
+    }
+
     private onHide(): void {
         this.background = true;
         this.cancelPresentation();
+        this.hud.renderDialog();
+        this.helpBusy = false;
     }
 
     private onShow(): void {
@@ -279,8 +345,16 @@ export class BreakfastGame extends Component {
 
     private renderHud(): void {
         this.hud.render(this.handoff ?? this.state, {
-            unlocked: this.progress.unlocked, sound: this.progress.sound, reduceMotion: this.progress.reduceMotion,
-            notice: this.notice, curtain: this.curtain, settingsOpen: this.settingsOpen,
+            unlocked: this.progress.unlocked, notice: this.notice, curtain: this.curtain,
         });
+    }
+
+    private renderDialog(entering = false): void {
+        this.helpBusy = false;
+        const { sound, reduceMotion } = this.progress;
+        if (this.dialog === 'settings') this.hud.renderDialog({ type: 'settings', sound, reduceMotion }, entering);
+        else if (this.dialog === 'help') {
+            this.hud.renderDialog({ type: 'help', state: this.helpState, notice: this.helpNotice, reduceMotion }, entering);
+        } else this.hud.renderDialog();
     }
 }
