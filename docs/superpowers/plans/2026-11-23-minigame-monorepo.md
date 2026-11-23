@@ -162,27 +162,27 @@
 - Creator: `games/breakfast-stall/`，`main` 场景。
 - 微信：`games/breakfast-stall/build/wechatgame-breakfast-release/`。
 
-- [ ] **Step 1: 关闭旧 Creator 并打开新工程**
+- [x] **Step 1: 关闭旧 Creator 并打开新工程**
 
 结束打开旧 `cocos-game` 的 Creator 窗口，不终止其他无关进程。通过根 `dev:cocos:breakfast` 启动新工程，等待资源导入。读取 `cocos://project/info`；路径不是新工程时停止，不改场景。
 
-- [ ] **Step 2: 检查场景、资源与全部静态验证**
+- [x] **Step 2: 检查场景、资源与全部静态验证**
 
 读取 `main` 场景和 `Breakfast Game` 组件；核对启动页五文件、场景脚本 UUID 和纹理引用。执行根 `npm test`、`npm run typecheck`、`npm run build:breakfast`，预期 35/35、类型 0、构建 0。
 
-- [ ] **Step 3: 只从新发布目录打开微信模拟器**
+- [x] **Step 3: 只从新发布目录打开微信模拟器**
 
 通过 `wechatide -c DeepSeekHarness open_project_window --project <新发布目录> --window-mode fullMode`，按需 `simulator_refresh`。截图确认《早点凑一单》首关/当前存档画面，日志无业务错误。
 
-- [ ] **Step 4: 验证帮助与真实取餐撤回**
+- [x] **Step 4: 验证帮助与真实取餐撤回**
 
 点击问号打开帮助，点米糕入碟，点茶叶蛋完成试玩并关闭；打开和关闭设置。正式关若停在第 12 关，先选 A、取油条、撤回，验证状态和画面恢复；不追求通关，不清存档。若触控仍无响应，保存驱动日志、截图与 `wx.getSystemInfoSync()` 结果，如实记录阻塞，不改玩法代码。
 
-- [ ] **Step 5: 记录验收并清理旧目录**
+- [x] **Step 5: 记录验收并清理旧目录**
 
 记录本轮测试、构建、MCP、微信截图与未覆盖真机。确认新工程可用后，先关闭旧窗口，再仅删除旧 `cocos-game/` 中忽略的 `build/library/profiles/temp` 和空目录；删除前 `realpath` 必须精确等于旧路径，不能碰 `.tooling/local/`。
 
-- [ ] **Step 6: 最终 diff 审查并提交**
+- [x] **Step 6: 最终 diff 审查并提交**
 
 检查 `git diff --check`、版本库文件、工作树与提交。提交 `test: 验证多游戏仓库迁移后的微信运行`。本轮不做真机或发布结论。
 

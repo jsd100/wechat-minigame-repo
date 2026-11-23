@@ -34,6 +34,12 @@ assert.equal(rootManifest.engines.node, '>=24 <25');
 assert.equal(rootManifest.devDependencies.typescript, '5.9.3');
 assert.equal(has('package-lock.json'), true, 'the root npm lockfile must exist');
 const lock = JSON.parse(read('package-lock.json'));
+for (const [location, entry] of Object.entries(lock.packages)) {
+    if (location.includes('node_modules/') && entry.version && !entry.link) {
+        assert.ok(entry.resolved, `${location} must pin its registry source`);
+        assert.ok(entry.integrity, `${location} must pin its registry integrity`);
+    }
+}
 const toolingManifest = JSON.parse(read('.tooling/package.json'));
 const launcher = read('.tooling/bin/mini-ai-mcp');
 assert.doesNotMatch(launcher, /"\$tooling_dir\/node_modules\/\$module"/);
