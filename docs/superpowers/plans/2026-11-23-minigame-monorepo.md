@@ -140,15 +140,15 @@
 - 微信验收：`games/breakfast-stall/build/wechatgame-breakfast-release/`。
 - 历史设计记录不改写当时路径；活动文档只使用新路径和根命令。
 
-- [ ] **Step 1: 用布局测试锁定根入口和新文档命令**
+- [x] **Step 1: 用布局测试锁定根入口和新文档命令**
 
 断言根 `project.config.json` 不存在，README 含 `games/breakfast-stall/`，AGENTS 与排障手册不再指导使用 `cocos-game/` 或 `.tooling/node_modules/.bin/tsc`。
 
-- [ ] **Step 2: 删除无效根微信配置并更新活动文档**
+- [x] **Step 2: 删除无效根微信配置并更新活动文档**
 
 根配置无 `game.js/game.json`，其 AppID 不迁移、不复用。README 记录多游戏边界、常用命令、共享工具恢复、AppID 与构建产物一一映射。历史文档只添加迁移说明，不伪造历史验证路径。
 
-- [ ] **Step 3: 全量搜索活动配置和文档**
+- [x] **Step 3: 全量搜索活动配置和文档**
 
 检查旧构建路径、根微信入口、固定 `.tooling/node_modules` 引用、敏感文件和意外生成物；核对 `.mcp` 启动器仍指向仓库根 `.tooling`。提交 `docs: 更新多游戏仓库开发入口与验收路径`。
 

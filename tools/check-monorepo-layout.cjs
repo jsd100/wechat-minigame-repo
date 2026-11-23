@@ -50,4 +50,18 @@ for (const [specifier, entry] of [
     ], { cwd: root, encoding: 'utf8' });
     assert.equal(resolved, path.join(root, location, entry));
 }
+assert.equal(has('project.config.json'), false, 'the invalid root WeChat entry must be removed');
+for (const relative of ['README.md', 'AGENTS.md', '环境使用说明.md', 'docs/开发排障与测试手册.md']) {
+    assert.ok(has(relative), `missing current guide ${relative}`);
+    const content = read(relative);
+    assert.match(content, /games\/breakfast-stall\//, `${relative} must use the game workspace`);
+    assert.equal(content.includes('cocos-game/'), false, `${relative} must not use the old Creator path`);
+    assert.equal(content.includes('.tooling/node_modules/.bin/tsc'), false, `${relative} must use the root TypeScript entry`);
+}
+for (const relative of ['README.md', '环境使用说明.md', 'docs/开发排障与测试手册.md']) {
+    const content = read(relative);
+    assert.match(content, /npm test/);
+    assert.match(content, /npm run typecheck/);
+    assert.match(content, /npm run build:breakfast/);
+}
 console.log('Monorepo layout checks passed.');

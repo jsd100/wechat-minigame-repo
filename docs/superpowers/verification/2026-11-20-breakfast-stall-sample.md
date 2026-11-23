@@ -1,5 +1,7 @@
 # 《摊位凑一单》小样验收记录
 
+> 历史记录：本文的 `cocos-game/` 和命令均对应当时目录。当前工程入口以 [README](../../../README.md) 和 [多游戏目录迁移说明](../../monorepo-migration.md) 为准，不以旧命令验收新工程。
+
 ## T1.1 · 进行中
 
 - 源码根目录为 `cocos-game/`。现有 `main.scene` 是空场景，工作区安装了 Node 24 和 TypeScript 5.9.3。
