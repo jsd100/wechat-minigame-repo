@@ -2,10 +2,19 @@
   "name": "wechat-minigames-workspace",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "test": "npm run test --workspace=breakfast-stall",
+    "typecheck": "npm run typecheck --workspace=breakfast-stall",
+    "build:breakfast": "npm run build:wechatgame --workspace=breakfast-stall",
+    "dev:cocos:breakfast": "open -a \"$PWD/.tooling/apps/CocosCreator.app\" --args --project \"$PWD/games/breakfast-stall\""
+  },
   "workspaces": [
     "games/*",
     ".tooling"
   ],
+  "devDependencies": {
+    "typescript": "5.9.3"
+  },
   "engines": {
     "node": ">=24 <25"
   }

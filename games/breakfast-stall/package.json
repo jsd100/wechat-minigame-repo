@@ -1,8 +1,10 @@
 {
-  "name": "cocos-game",
+  "name": "breakfast-stall",
   "uuid": "971ca89b-52c5-4df6-833b-2fa2525ec12c",
   "scripts": {
-    "build:wechatgame": "node tools/build-wechatgame.cjs"
+    "build:wechatgame": "node tools/build-wechatgame.cjs",
+    "test": "node tools/test-rules.cjs",
+    "typecheck": "node tools/typecheck.cjs"
   },
   "creator": {
     "version": "3.8.8"

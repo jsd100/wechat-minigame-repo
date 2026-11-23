@@ -6,8 +6,19 @@ const projectDir = path.resolve(__dirname, '..');
 const configPath = path.join(projectDir, 'build.wechatgame.release.json');
 const { buildPath, outputName } = require(configPath);
 const outputDir = path.resolve(projectDir, buildPath.replace(/^project:\/\//, ''), outputName);
-const creator = process.env.COCOS_CREATOR_BIN || path.resolve(
-    projectDir, '../.tooling/apps/CocosCreator.app/Contents/MacOS/CocosCreator',
+function findRepoRoot(start) {
+    let current = start;
+    while (true) {
+        if (statSync(path.join(current, '.tooling'), { throwIfNoEntry: false })?.isDirectory()) return current;
+        const parent = path.dirname(current);
+        if (parent === current) throw new Error('无法从构建脚本向上找到包含 .tooling 的仓库根。');
+        current = parent;
+    }
+}
+
+const repoDir = findRepoRoot(__dirname);
+const creator = process.env.COCOS_CREATOR_BIN || path.join(
+    repoDir, '.tooling/apps/CocosCreator.app/Contents/MacOS/CocosCreator',
 );
 
 const result = spawnSync(creator, ['--project', projectDir, '--build', `configPath=${configPath}`], {
