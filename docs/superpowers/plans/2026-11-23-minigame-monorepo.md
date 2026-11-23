@@ -75,19 +75,19 @@
 - Produces: 游戏内 `npm run test`、`npm run typecheck`、`npm run build:wechatgame`；根 `npm run test`、`npm run typecheck`、`npm run build:breakfast`、`npm run dev:cocos:breakfast`。
 - `build:wechatgame` 保留原 Creator 退出码 36 → 0 和早餐启动页校验。
 
-- [ ] **Step 1: 先让布局测试覆盖仓库根定位与公共脚本**
+- [x] **Step 1: 先让布局测试覆盖仓库根定位与公共脚本**
 
 增加断言：构建器不再含 `../.tooling` 的旧相对发现路径，游戏包名改为 `breakfast-stall`，根 `dev:cocos:breakfast` 指向新工程。先确认失败。
 
-- [ ] **Step 2: 修复 Creator 路径与游戏脚本**
+- [x] **Step 2: 修复 Creator 路径与游戏脚本**
 
 从脚本位置向上查找含 `.tooling` 的仓库根，不依赖调用命令时的 `process.cwd()`，仍优先 `COCOS_CREATOR_BIN`。新增仅负责编译纯规则模块并调用 `node --test tests/*.test.cjs` 的脚本，以及只传入游戏 `assets` 和生成 `temp/declarations/cc.d.ts` 的类型检查脚本。`test-rules.cjs` 在独立临时目录输出测试 JS，不把编译产物写入源码；`typecheck.cjs` 沿用现有 ES2015/装饰器/`skipLibCheck` 参数，不递归检查扩展。脚本不硬编码机器绝对路径。
 
-- [ ] **Step 3: 在新工程运行静态验证**
+- [x] **Step 3: 在新工程运行静态验证**
 
 先由新路径打开 Creator 并生成声明，再运行 `npm --prefix games/breakfast-stall run test`、`npm --prefix games/breakfast-stall run typecheck` 和 `npm --prefix games/breakfast-stall run build:wechatgame`。预期 35 项测试通过、类型退出 0、构建退出 0。
 
-- [ ] **Step 4: 提交工作区脚本**
+- [x] **Step 4: 提交工作区脚本**
 
 提交 `build: 为多游戏工程增加统一测试与构建入口`。
 
