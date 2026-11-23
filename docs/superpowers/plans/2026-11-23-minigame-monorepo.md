@@ -42,23 +42,23 @@
 - Produces: 新 Creator 根 `games/breakfast-stall/`；布局检查命令 `node tools/check-monorepo-layout.cjs`。
 - Preserves: `package.json` 的 `uuid`、`creator.version`、所有 `assets/**.meta` 与两个构建 JSON。
 
-- [ ] **Step 1: 核对基线并编写布局失败测试**
+- [x] **Step 1: 核对基线并编写布局失败测试**
 
 确认 `git status --short` 仅有已审阅的设计/计划文档；基线 `7e2237c` 包含早餐启动页五个文件。布局测试在迁移前运行，预期因 `games/breakfast-stall/package.json` 不存在而失败。
 
-- [ ] **Step 2: 移动完整工程**
+- [x] **Step 2: 移动完整工程**
 
 创建 `games/` 后用 `git mv cocos-game games/breakfast-stall` 移动受控工程。保留 `assets/`、`settings/`、`extensions/`、`tools/`、`tests/`、`package.json`、`tsconfig.json` 和构建配置；不手工重建 `.meta` 或项目 UUID。
 
-- [ ] **Step 3: 更新忽略规则与布局检查**
+- [x] **Step 3: 更新忽略规则与布局检查**
 
 将 `/cocos-game/{build,library,local,profiles,temp}/` 改为 `/games/*/...` 对应规则，保留全局 `node_modules/`、本机工具和凭证忽略。测试断言新工程必要文件存在、启动页五文件存在、旧 `cocos-game/package.json` 不再存在、构建输出名与 AppID 不变。
 
-- [ ] **Step 4: 验证移动没有改写受控源码**
+- [x] **Step 4: 验证移动没有改写受控源码**
 
 运行 `git diff --summary`、`git diff --check` 和布局检查；核对 `git status` 中只有迁移、设计/计划及明确配置改动。此步不跑依赖旧 `temp` 的 Creator 类型检查。
 
-- [ ] **Step 5: 提交工程移动**
+- [x] **Step 5: 提交工程移动**
 
 `git add` 后提交 `refactor: 将早餐工程迁移至多游戏目录`。
 
