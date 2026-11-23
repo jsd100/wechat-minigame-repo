@@ -10,6 +10,8 @@
 
 **Spec:** `docs/superpowers/specs/2026-11-23-minigame-monorepo-design.md`
 
+**执行前必读：** `docs/monorepo-execution.md` 记录当前阶段、不可违反的边界、恢复顺序和文档同步清单。本文的目标路径在任务实际完成前不代表当前文件位置；每项任务完成时更新本文复选框及执行状态文件。用户已要求迁移完成后同步更新所有当前项目文档，不能只修改源码而留下过时命令。
+
 ## Global Constraints
 
 - 跨游戏只共享开发工具链，不修改玩法、AppID、存档键、素材、资源 UUID 或启动页文案。
@@ -79,7 +81,7 @@
 
 - [ ] **Step 2: 修复 Creator 路径与游戏脚本**
 
-从 `process.cwd()` 向上查找含 `.tooling` 的仓库根，仍优先 `COCOS_CREATOR_BIN`。新增仅负责编译纯规则模块并调用 `node --test tests/*.test.cjs` 的脚本，以及只传入游戏 `assets` 和生成 `temp/declarations/cc.d.ts` 的类型检查脚本。脚本从 `process.cwd()` 或包根定位，不硬编码机器绝对路径。
+从脚本位置向上查找含 `.tooling` 的仓库根，不依赖调用命令时的 `process.cwd()`，仍优先 `COCOS_CREATOR_BIN`。新增仅负责编译纯规则模块并调用 `node --test tests/*.test.cjs` 的脚本，以及只传入游戏 `assets` 和生成 `temp/declarations/cc.d.ts` 的类型检查脚本。`test-rules.cjs` 在独立临时目录输出测试 JS，不把编译产物写入源码；`typecheck.cjs` 沿用现有 ES2015/装饰器/`skipLibCheck` 参数，不递归检查扩展。脚本不硬编码机器绝对路径。
 
 - [ ] **Step 3: 在新工程运行静态验证**
 
@@ -96,7 +98,7 @@
 - Create: `package-lock.json`
 - Modify: `.tooling/bin/mini-ai-mcp`
 - Modify: `.tooling/package.json`
-- Modify: `games/breakfast-stall/extensions/cocos-creator-mcp/package.json`（仅修正自身 manifest 版本一致性，保留独立 lockfile）
+- Modify: `games/breakfast-stall/extensions/cocos-creator-mcp/package-lock.json`（仅用该扩展自身 npm 对齐根版本，保留依赖和独立 lockfile）
 
 **Interfaces:**
 - Workspaces: `games/*`、`.tooling`。
@@ -128,7 +130,9 @@
 - Modify: `环境使用说明.md`
 - Modify: `微信小程序与2D-3D小游戏AI开发资源手册.md`
 - Modify: `docs/开发排障与测试手册.md`
+- Create: `docs/monorepo-migration.md`
 - Modify: `docs/superpowers/verification/2026-11-20-breakfast-stall-sample.md`
+- Modify: `docs/monorepo-execution.md`
 
 **Interfaces:**
 - 游戏 ID → 工程：`breakfast-stall` → `games/breakfast-stall/`。
