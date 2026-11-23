@@ -1,0 +1,12 @@
+{
+  "name": "wechat-minigames-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "games/*",
+    ".tooling"
+  ],
+  "engines": {
+    "node": ">=24 <25"
+  }
+}

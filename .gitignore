@@ -27,8 +27,8 @@ __pycache__/
 /opencode.json
 
 # Generated Cocos outputs and user-specific editor state
-/cocos-game/build/
-/cocos-game/library/
-/cocos-game/local/
-/cocos-game/profiles/
-/cocos-game/temp/
+/games/*/build/
+/games/*/library/
+/games/*/local/
+/games/*/profiles/
+/games/*/temp/
