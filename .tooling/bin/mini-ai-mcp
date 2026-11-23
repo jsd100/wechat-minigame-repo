@@ -36,4 +36,5 @@ if [ -z "$node_path" ] || [ ! -x "$node_path" ]; then
     exit 1
 fi
 
-exec "$node_path" "$tooling_dir/node_modules/$module"
+module_path=$("$node_path" "$tooling_dir/bin/resolve-mcp-module.cjs" "$module")
+exec "$node_path" "$module_path"

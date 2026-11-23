@@ -97,6 +97,7 @@
 - Modify: `package.json`
 - Create: `package-lock.json`
 - Modify: `.tooling/bin/mini-ai-mcp`
+- Create: `.tooling/bin/resolve-mcp-module.cjs`
 - Modify: `.tooling/package.json`
 - Modify: `games/breakfast-stall/extensions/cocos-creator-mcp/package-lock.json`（仅用该扩展自身 npm 对齐根版本，保留依赖和独立 lockfile）
 
@@ -105,19 +106,19 @@
 - MCP 模块通过 Node `require.resolve()` 从根依赖解析；凭证和 Node fallback 路径不变。
 - 根依赖 `typescript` 仅用于开发；不升级共享 MCP 包或游戏运行时。
 
-- [ ] **Step 1: 增加依赖提升的失败测试**
+- [x] **Step 1: 增加依赖提升的失败测试**
 
 布局测试要求根 workspaces 包含 `.tooling`，启动器不再引用 `.tooling/node_modules/$module`，而是可定位到根安装后的模块。
 
-- [ ] **Step 2: 配置 npm workspaces 并生成根锁文件**
+- [x] **Step 2: 配置 npm workspaces 并生成根锁文件**
 
 根声明私有包、`games/*`、`.tooling`、`engines.node: ">=24 <25"`，根脚本委托游戏命令；共享 TypeScript 声明为根开发依赖。运行 `npm install`，不把扩展 `node_modules` 纳入 workspace。
 
-- [ ] **Step 3: 修改 MCP 解析并实测**
+- [x] **Step 3: 修改 MCP 解析并实测**
 
 用小型 Node 启动器按模块 specifier `require.resolve()`，再由 shell 启动该路径。保留 `mini-ai-mcp minigame|cloudbase|wechatide` 公共接口和 Token 读取规则。对三个服务发送换行 JSON `initialize` 和 `tools/list`；微信还需只读 `project_list`，CloudBase 只读 `auth(status)`。
 
-- [ ] **Step 4: 验证根命令与工具版本**
+- [x] **Step 4: 验证根命令与工具版本**
 
 运行 `npm ls --depth=0`、`npm test`、`npm run typecheck`，检查 `node_modules/.bin/tsc --version` 为 5.9.3。提交 `build: 使用 npm workspaces 统一共享开发工具`。
 

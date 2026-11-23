@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const { existsSync, readFileSync } = require('node:fs');
 const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
 const game = path.join(root, 'games/breakfast-stall');
@@ -26,5 +27,27 @@ assert.match(read('games/breakfast-stall/assets/main.scene'), /7ab9fJX3ypFuK7Xme
 for (const directory of ['build', 'library', 'local', 'profiles', 'temp']) {
     assert.match(read('.gitignore'), new RegExp(`^/games/\\*/${directory}/$`, 'm'));
 }
-assert.equal(JSON.parse(read('package.json')).private, true);
+const rootManifest = JSON.parse(read('package.json'));
+assert.equal(rootManifest.private, true);
+assert.deepEqual(rootManifest.workspaces, ['games/*', '.tooling']);
+assert.equal(rootManifest.engines.node, '>=24 <25');
+assert.equal(rootManifest.devDependencies.typescript, '5.9.3');
+assert.equal(has('package-lock.json'), true, 'the root npm lockfile must exist');
+const lock = JSON.parse(read('package-lock.json'));
+const toolingManifest = JSON.parse(read('.tooling/package.json'));
+const launcher = read('.tooling/bin/mini-ai-mcp');
+assert.doesNotMatch(launcher, /"\$tooling_dir\/node_modules\/\$module"/);
+for (const [specifier, entry] of [
+    ['@weadmin/weixin-minigame-helper-mcp/mcp/index.js', 'mcp/index.js'],
+    ['@cloudbase/cloudbase-mcp/dist/cli.cjs', 'dist/cli.cjs'],
+]) {
+    const packageName = specifier.split('/').slice(0, 2).join('/');
+    const location = Object.keys(lock.packages).find((key) => key.endsWith(`node_modules/${packageName}`));
+    assert.ok(location, `${packageName} must be in the root npm lockfile`);
+    assert.equal(lock.packages[location].version, toolingManifest.dependencies[packageName]);
+    const resolved = execFileSync(process.execPath, [
+        '.tooling/bin/resolve-mcp-module.cjs', specifier,
+    ], { cwd: root, encoding: 'utf8' });
+    assert.equal(resolved, path.join(root, location, entry));
+}
 console.log('Monorepo layout checks passed.');

@@ -6,11 +6,13 @@
 
 ## 当前状态（2026-11-23）
 
-- **阶段：任务 2 已完成，新 Creator 工程可构建；下一步统一 npm workspaces 与 MCP 依赖解析。**
+- **阶段：任务 3 已完成，共享 MCP 与根命令已验证；下一步清理无效根入口并更新现行文档。**
 - 当前分支 `main`，迁移前业务基线提交为 `7e2237c`。设计提交 `723b60f`，计划提交 `3ea71e9`。
 - 用户已确认：未来只共享开发工具链，不共享云账号、排行榜、广告或通用玩法组件。
 - 用户已要求：完成 monorepo 改动时，同步更新项目相关文档，避免过时命令和目录继续误导执行。
 - 任务 1 已将受控源码迁到 `games/breakfast-stall/`（提交 `7ffe77a`），65 项资源与启动页文件哈希一致。任务 2 提交 `10cf690`：35 项测试、类型检查、微信发布构建通过。旧 `cocos-game/` 仅剩忽略的生成物，后续按安全步骤清理。
+- 任务 3 已适配 npm workspaces 与 MCP 解析：35/35 根测试、类型检查、TypeScript 5.9.3 和三条 stdio MCP 握手通过；微信 `project_list`、CloudBase `auth(status)` 只读调用成功。CloudBase 当前未登录，不代为登录。
+- 用户已确认以目录划分和各游戏独立为目标，不要求所有依赖物理提升到根目录。共享工具可按 npm 默认策略嵌套安装，独立 `.tooling/package-lock.json` 保留；不为此更换包管理器。
 - 基线已验证：35 项 Node 测试、Cocos 类型检查、微信发布构建通过。最后一次模拟器触控未产生画面变化，**本次帮助交互未通过复验**，不能用历史成功截图代替本轮证据。
 
 ## 已确定的执行方式
@@ -23,7 +25,7 @@
 
 1. 每款游戏独立 Creator 工程、AppID、素材、存档、构建配置和产物；不创建空 `packages/` 或通用游戏框架。
 2. 完整保留 `assets/` 及其 `.meta`、场景引用、Bundle 配置、`settings/`、Creator 项目 UUID 和启动页扩展五文件。
-3. 使用 npm workspaces，不引入 pnpm、Turborepo 或 Nx；MCP 与 `tsc` 从根依赖解析，不写死 `.tooling/node_modules/`。
+3. 使用 npm workspaces，不引入 pnpm、Turborepo 或 Nx；MCP 从仓库根工作区和 `.tooling` 的正常 Node 搜索路径解析，`tsc` 从根依赖或 npm 工作区 PATH 调用，均不写死 `.tooling/node_modules/`。
 4. 不同时打开多个受控 Creator 工程。读取到旧路径时停止，不修改场景，不以换端口冒充切换成功。
 5. 不上传、提审、发布、写 CloudBase、清用户存档或改真实账号配置。
 6. `.tooling/local/`、Token、模拟器数据、截图、Creator 缓存和生成物不进提交。清理任何旧目录前先核对精确绝对路径。
@@ -38,7 +40,7 @@
 | 微信发布目录 | `cocos-game/build/wechatgame-breakfast-release/` | `games/breakfast-stall/build/wechatgame-breakfast-release/` |
 | 构建命令 | `npm --prefix cocos-game run build:wechatgame` | 根 `npm run build:breakfast` |
 | 测试/类型 | 手工 `tsc` 长命令 | 根 `npm test` / `npm run typecheck` |
-| MCP 启动器 | `.tooling/bin/mini-ai-mcp` | 保持原路径，模块从根解析 |
+| MCP 启动器 | `.tooling/bin/mini-ai-mcp` | 保持原路径，通过 Node 从根工作区及 `.tooling` 解析 |
 | 根微信配置 | 有 AppID、无游戏入口的旧配置 | 删除，不迁移、不复用 AppID |
 
 ## 执行状态更新规则

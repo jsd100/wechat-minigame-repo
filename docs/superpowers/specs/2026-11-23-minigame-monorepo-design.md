@@ -45,7 +45,7 @@
 
 迁移时保留两份来源锁文件的内容：用 npm 生成根锁文件，不手抄依赖解析；Cocos MCP 扩展的独立锁文件保留。扩展 manifest 与其锁文件的版本差异单独核对，不在迁移中顺手升级扩展。
 
-采用 npm 默认的依赖提升，不要求 `--install-strategy=nested`。MCP 启动器通过 `require.resolve()` 从根 `node_modules` 查找服务模块，TypeScript 等命令通过根 `node_modules/.bin/` 或 npm 工作区 PATH 调用，不再写死 `.tooling/node_modules/`。根安装使用 `npm install` 并验证三个 stdio MCP 握手，不假设旧目录中的依赖仍然存在。
+采用 npm 默认的依赖安装策略，不要求 `--install-strategy=nested`，也不追求所有依赖在物理上都位于根 `node_modules/`；目录划分与各游戏独立才是目标。npm 可将共享工具依赖保留在 `.tooling/node_modules/`，其独立锁文件继续保留。MCP 启动器通过 `require.resolve()` 从仓库根工作区和 `.tooling` 的正常 Node 搜索路径解析服务模块，兼容包的 `exports` 限制，不写死 `.tooling/node_modules/`。TypeScript 等命令通过根 `node_modules/.bin/` 或 npm 工作区 PATH 调用。根安装使用 `npm install` 并验证三个 stdio MCP 握手。
 
 早餐启动页扩展的 `builder.js`、`hooks.js`、`package.json`、`breakfast-start.jpg`、`breakfast-start-art.jpg` 已全部纳入基线提交 `7e2237c`。迁移逐个核对这五个文件及启动页效果，不能只迁移旧提交中曾存在的文件。
 
