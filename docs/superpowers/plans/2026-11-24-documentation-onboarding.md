@@ -48,19 +48,19 @@
 - `node tools/check-documentation.cjs` 检查现行 Markdown 相对链接、教程入口和已归档文件位置，返回非零表示导航断裂。
 - `docs/archive/README.md` 是历史入口；`docs/superpowers/` 保持原目录与既有任务约定。
 
-- [ ] **Step 1: 写失败的文档导航检查**
+- [x] **Step 1: 写失败的文档导航检查**
 
 用 Node 内置模块实现检查器：扫描日常文档的本地 Markdown 链接，跳过 `docs/superpowers/` 与扩展上游文档；检查 `docs/getting-started.md` 存在、两份迁移文件只在 `docs/archive/`，并禁止日常文档链接旧 `docs/monorepo-{execution,migration}.md` 路径。先运行，Expected: 因从零教程与归档入口不存在而失败。
 
-- [ ] **Step 2: 移动两份迁移资料并修正归档内部链接**
+- [x] **Step 2: 移动两份迁移资料并修正归档内部链接**
 
 先读取文件再使用明确路径的 `git mv`。建立 `docs/archive/README.md` 解释归档边界。保留历史事实，仅调整迁移说明与执行台账中的导航和归档相对链接；`docs/superpowers/` 原位置与历史正文保留，仅将上述两个受移动影响的链接指向 `docs/archive/`。
 
-- [ ] **Step 3: 更新 Agent 与目录契约，验证链接**
+- [x] **Step 3: 更新 Agent 与目录契约，验证链接**
 
 在 AGENTS 中将入门教程、AI 环境、历史归档分别导航；在目录契约中写明日常文档、`docs/archive/` 与 `docs/superpowers/` 的职责。暂不创建教程，Expected: 检查器仍只因教程缺失而失败，不再报归档旧路径或移动后的相对链接错误。
 
-- [ ] **Step 4: 提交归档与检查器**
+- [x] **Step 4: 提交归档与检查器**
 
 Run: `node tools/check-documentation.cjs` 并记录预期教程缺失；`git diff --check`。提交：`docs: 归档迁移资料并建立文档导航检查`。
 

@@ -1,8 +1,8 @@
 # Monorepo 迁移执行状态与文档维护约定
 
-> **历史归档（2026-11-24）**：2026-11-23 目录迁移已完成，最终迁移提交为 `d8df14c`。日常开发以 [长期目录契约](repository-layout.md) 和目标游戏 README 为准，不要求先读本台账。
+> **历史归档（2026-11-24）**：2026-11-23 目录迁移已完成，最终迁移提交为 `d8df14c`。日常开发以 [长期目录契约](../repository-layout.md) 和目标游戏 README 为准，不要求先读本台账。
 >
-> 本文件只记录当次迁移的决策、执行和历史证据。只有审计该次迁移时才需要结合 [目标设计](superpowers/specs/2026-11-23-minigame-monorepo-design.md)、[迁移实施计划](superpowers/plans/2026-11-23-minigame-monorepo.md) 和 Git 历史阅读，不再维护“进行中”的恢复状态。
+> 本文件只记录当次迁移的决策、执行和历史证据。只有审计该次迁移时才需要结合 [目标设计](../superpowers/specs/2026-11-23-minigame-monorepo-design.md)、[迁移实施计划](../superpowers/plans/2026-11-23-minigame-monorepo.md) 和 Git 历史阅读，不再维护“进行中”的恢复状态。
 
 ## 当前状态（2026-11-23）
 
@@ -14,7 +14,7 @@
 - 任务 3 已适配 npm workspaces 与 MCP 解析：35/35 根测试、类型检查、TypeScript 5.9.3 和三条 stdio MCP 握手通过；微信 `project_list`、CloudBase `auth(status)` 只读调用成功。CloudBase 当前未登录，不代为登录。
 - 任务 4 已删除无对应游戏入口的根 `project.config.json`，补齐 README、环境说明、排障手册和迁移导航；现行指南只使用 `games/breakfast-stall/` 与根命令。布局测试先因根无效入口而失败，修正文档命令与历史映射断言范围后复验。
 - 任务 5 的 35/35 根测试、类型检查、发布构建通过，MCP 确认新工程 `main` 场景与脚本/纹理引用；微信新发布目录中帮助、设置、取餐和撤回通过。启动页五文件与基线逐字节一致，本轮错误日志过滤为空。
-- 旧 `cocos-game/` 在清理前仅剩 `library/profiles/temp` 缓存；已核对精确路径并删除缓存与空目录，未触碰新工程、源码、凭证或 `.tooling/local/`。本轮证据见 [验收记录](superpowers/verification/2026-11-23-minigame-monorepo.md)。
+- 旧 `cocos-game/` 在清理前仅剩 `library/profiles/temp` 缓存；已核对精确路径并删除缓存与空目录，未触碰新工程、源码、凭证或 `.tooling/local/`。本轮证据见 [验收记录](../superpowers/verification/2026-11-23-minigame-monorepo.md)。
 - 用户已确认以目录划分和各游戏独立为目标，不要求所有依赖物理提升到根目录。共享工具可按 npm 默认策略嵌套安装，独立 `.tooling/package-lock.json` 保留；不为此更换包管理器。
 - 独立审查发现根锁 1,217 个共享依赖条目缺少 `resolved`/`integrity`；已用 npm 默认布局重建并加回归断言。最终干净快照的 `npm ci`、35/35 测试、类型检查和三条 MCP 握手通过，1,261 个注册表条目均有完整校验信息，清单与锁一致。
 - 基线时的触控未通过问题已由本轮真实画面复验：帮助打开、米糕入碟、茶叶蛋完成、设置开关和取餐撤回均产生预期状态。证据全部来自本次运行，不使用历史成功截图。

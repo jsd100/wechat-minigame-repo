@@ -19,11 +19,11 @@
 
 本次是目录划分与共享开发工具链整理，不引入通用玩法框架、共享云账号、排行榜或广告，也不要求完整 monorepo 的所有依赖物理提升。npm workspaces 包含 `games/*` 和 `.tooling`，共享工具可按 npm 默认策略嵌套安装，独立 `.tooling/package-lock.json` 保留。Cocos MCP 扩展仍属于早餐工程，其独立依赖和锁文件不并入游戏工作区。
 
-资源与启动页文件已在任务 1 核对 65 项哈希一致。构建、MCP、微信模拟器和旧生成物清理的实际结果以 [本次验收记录](superpowers/verification/2026-11-23-minigame-monorepo.md) 为准，未完成项不由本文推断。
+资源与启动页文件已在任务 1 核对 65 项哈希一致。构建、MCP、微信模拟器和旧生成物清理的实际结果以 [本次验收记录](../superpowers/verification/2026-11-23-minigame-monorepo.md) 为准，未完成项不由本文推断。
 
 ## 新增游戏（历史说明）
 
-以下是迁移时的新增游戏约定。当前长期契约以 [目录与开发工具契约](repository-layout.md) 为准，具体步骤以目标游戏 README 为准，不再以本文件作为新增游戏唯一入口。
+以下是迁移时的新增游戏约定。当前长期契约以 [目录与开发工具契约](../repository-layout.md) 为准，具体步骤以目标游戏 README 为准，不再以本文件作为新增游戏唯一入口。
 
 1. 在 `games/<game-id>/` 创建独立工程与 `package.json`，按当前根命令约定提供游戏自有脚本。
 2. 分别配置 Creator UUID、AppID、素材、存档、构建配置和独立产物。
@@ -33,4 +33,4 @@
 
 ## 历史资料
 
-旧设计、计划与验收记录中的 `cocos-game/` 是当时真实路径，不批量改写。现行操作以 [README](../README.md)、[长期目录契约](repository-layout.md) 和目标游戏 README 为准；迁移执行过程见 [历史执行台账](monorepo-execution.md)。
+旧设计、计划与验收记录中的 `cocos-game/` 是当时真实路径，不批量改写。现行操作以 [README](../../README.md)、[长期目录契约](../repository-layout.md) 和目标游戏 README 为准；迁移执行过程见 [历史执行台账](./monorepo-execution.md)。

@@ -1,6 +1,6 @@
 # 微信小程序与小游戏开发
 
-先读 [仓库入口](README.md)、[目录与开发工具契约](docs/repository-layout.md) 和目标游戏的 `README.md`，确认项目类型、源码目录、构建产物及前置条件。小程序使用 `app.json` 和原生 TypeScript；原生 2D 小游戏使用 `game.js`、`game.json` 和 Canvas 2D；Cocos 游戏使用各自 `games/<game-id>/` 中的 Creator 工程与 TypeScript。
+先读 [仓库入口](README.md)、[从零运行指南](docs/getting-started.md)、[目录与开发工具契约](docs/repository-layout.md) 和目标游戏的 `README.md`，确认项目类型、源码目录、构建产物及前置条件。小程序使用 `app.json` 和原生 TypeScript；原生 2D 小游戏使用 `game.js`、`game.json` 和 Canvas 2D；Cocos 游戏使用各自 `games/<game-id>/` 中的 Creator 工程与 TypeScript。
 
 ## 跨项目规则
 
@@ -20,4 +20,4 @@
 - 新增游戏、构建脚本或共享工具时按所有权更新文档：公共契约变化更新 README、环境说明、排障手册和本文件；单个游戏变化更新该游戏 README 与记录。
 - 资源和 `.meta`、Creator UUID、启动页扩展必须整体保留；不得将历史设计/验收记录中的旧路径批量改写成新事实。
 - 版本化的构建、检查和素材维护脚本是稳定开发入口。`.tooling/local/`、随机 `/tmp` 快照及旧迁移驱动不得成为日常运行依赖。
-- 2026-11-23 迁移验收与安全清理由 [历史执行台账](docs/monorepo-execution.md) 记录；日常开发不要求先读该台账。若文档、实际目录或计划不一致，先停止核对，不覆盖未提交改动，不自动扩大改动范围。
+- 历史迁移资料集中在 [docs/archive/](docs/archive/README.md)，`docs/superpowers/` 按原任务约定保留；日常开发不要求先读这些资料。若文档、实际目录或计划不一致，先停止核对，不覆盖未提交改动，不自动扩大改动范围。
