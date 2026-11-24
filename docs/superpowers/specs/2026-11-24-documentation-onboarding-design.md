@@ -14,7 +14,7 @@
 - macOS 与 Windows 分开写下载、安装和界面操作，避免把 macOS `.app` 路径套用到 Windows。
 - AI、MCP、Skills、Token、自动化测试和命令行启动/构建是进阶可选项，不能成为首次 GUI 运行的前置条件。
 - 保留《微信小程序与2D-3D小游戏AI开发资源手册》，定位为泛微信生态进阶资料，不承担本项目运行教程。
-- `docs/superpowers/` 整目录不动，继续作为既有任务资料区，不作为日常文档入口。
+- `docs/superpowers/` 整目录不移动、不整理、不改写历史正文，继续作为既有任务资料区，不作为日常文档入口；仅允许修复归档移动直接造成的相对链接。
 - 历史迁移资料不删除，移入 `docs/archive/` 并修正移动造成的相对链接；保留当时事实，不批量改写历史路径。
 - Cocos 扩展自带的 README、迁移与设计文档属于扩展资料，不纳入本次清理。
 
@@ -48,7 +48,7 @@ Node 24 与 npm 只列为可选验证和进阶开发依赖，安装放在 GUI �
 
 从 Dashboard 或编辑器打开 `games/breakfast-stall/`，不是仓库根目录。等待首次资源导入完成，再打开 `assets/main.scene`。
 
-说明工程已带 `breakfast-startup` 启动页扩展和 `cocos-creator-mcp` 扩展。普通构建不要求安装 MCP 客户端或配置 Token。Cocos MCP 可选服务在启用前需要 Node/npm 安装并构建其扩展依赖；只有准备使用 MCP/AI 调试时才执行这一步及客户端设置。
+说明工程已带 `breakfast-startup` 启动页扩展和 `cocos-creator-mcp` 扩展。普通构建不要求安装 MCP 客户端或配置 Token。新克隆未包含被忽略的 MCP `dist/` 与 `node_modules/`，而 MCP 配置为自动启动；若 Creator 报该可选扩展无法加载，教程需指导读者在扩展管理器中禁用 `cocos-creator-mcp` 或忽略此可选功能错误，并确认 `breakfast-startup` 启用，不能把它当作普通构建失败的修复。Cocos MCP 可选服务在启用前需要 Node/npm 安装并构建其扩展依赖；只有准备使用 MCP/AI 调试时才执行这一步及客户端设置。
 
 ### 3. 在 Creator 中构建微信小游戏
 
@@ -82,9 +82,9 @@ Node 24 与 npm 只列为可选验证和进阶开发依赖，安装放在 GUI �
 
 ## 验证与范围
 
-- 在 macOS 按 GUI 主路径重新核对工程、场景、Creator 构建和微信模拟器帮助交互，保存本轮证据；不重新安装或覆盖现有工具。
+- 在 macOS 按 GUI 主路径重新核对工程、场景、Creator 构建和微信模拟器帮助交互，保存本轮证据；使用不含 `node_modules/`、MCP `dist/`、`profiles/`、旧构建产物的独立干净源码副本验证首次导入，不能只沿用已配置工作区的成功结果。不重新安装或覆盖现有工具，不改主工作区。
 - 运行 `npm test`、`npm run typecheck`、`npm run check`，验证整理没有影响现有工程。
-- 用本地 Markdown 链接检查器验证现行文档及移动后的归档相对链接；现行文档不得指向已移动的旧位置。
+- 用本地 Markdown 链接检查器验证现行文档及移动后的归档相对链接；现行文档不得指向已移动的旧位置。对 `docs/superpowers/` 中受移动直接影响的两个链接只改目标到 `docs/archive/`，不改其余历史正文。
 - 搜索重复/旧路径/错误入口，确保“仓库根不是微信导入目录”“GUI 不需要 MCP/Node”“Windows 不使用 `.app` 默认路径”等关键前提一致。
 - 由独立审阅者复核教程是否真正从零可达、文档职责是否清晰、是否误删历史或扩大实现范围。
 - Windows 步骤依据官方资料与项目配置编写，当前没有 Windows 实机，明确标为 **未进行 Windows 本机实测**；macOS 有实际验证，不能把文档核对表述为 Windows 验收通过。
