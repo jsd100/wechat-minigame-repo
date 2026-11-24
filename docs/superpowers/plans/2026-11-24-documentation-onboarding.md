@@ -76,19 +76,19 @@ Run: `node tools/check-documentation.cjs` 并记录预期教程缺失；`git dif
 - 教程固定源码目录 `games/breakfast-stall/`、产物目录 `games/breakfast-stall/build/wechatgame-breakfast-release/`、输出名 `wechatgame-breakfast-release`。
 - README 只提供入口与公共命令摘要，详细安装步骤只存于从零教程。
 
-- [ ] **Step 1: 核对官方安装来源与 GUI 构建事实**
+- [x] **Step 1: 核对官方安装来源与 GUI 构建事实**
 
 核对 Cocos Creator 3.8.8 LTS 官方下载、微信开发者工具下载和 Creator「项目 → 构建发布」。列出平台、现有 AppID、竖屏、输出名与 `build` 目录。GUI 配置不依赖本机忽略的旧 `profiles/`，不要求手动重建 `build.wechatgame.*.json`。
 
-- [ ] **Step 2: 编写安装、克隆、构建、运行和成功标准**
+- [x] **Step 2: 编写安装、克隆、构建、运行和成功标准**
 
 macOS 与 Windows 分节：官方安装包、HTTPS 克隆、Creator 导入源码目录、等待导入、GUI 构建、微信选择小游戏并导入产物、帮助流程实测。微信账号需有该小游戏 AppID 的开发权限。写明普通 GUI 不需要 Node/MCP；新克隆缺少 MCP `dist/` 时，在扩展管理器禁用该可选扩展或忽略其加载错误，同时确认早餐启动页扩展启用。MCP 扩展使用前需 Node 安装并构建依赖。首轮只要求本地模拟器运行，不包含真机或发布。
 
-- [ ] **Step 3: 添加可选验证与进阶路径**
+- [x] **Step 3: 添加可选验证与进阶路径**
 
 Node 24 安装后运行 `npm ci`、`npm test`、`npm run check`；类型检查需 Creator 已导入生成声明。CLI 仅作进阶：macOS 默认 `.tooling/apps/CocosCreator.app`，其他位置/Windows 用 `COCOS_CREATOR_BIN` 指定实际可执行文件。说明 Windows 尚未本机实测。
 
-- [ ] **Step 4: 收敛 README 与早餐说明，运行文档检查**
+- [x] **Step 4: 收敛 README 与早餐说明，运行文档检查**
 
 README 链接教程、早餐说明、AI 环境、排障和历史入口；早餐 README 只保留游戏专属配置、测试、脚本与验收。Run: `node tools/check-documentation.cjs`，Expected: 所有现行文档和归档链接通过。提交：`docs: 增加双平台从零运行教程`。
 

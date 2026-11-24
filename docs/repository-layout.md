@@ -28,6 +28,7 @@
 | `npm run check:layout` | 根 `tools/check-monorepo-layout.cjs` | 检查通用 workspace、独立输出名、忽略规则、游戏 `check` 脚本和根锁完整性；不读取游戏资源。 |
 | `npm run check` | 根布局检查 + 各游戏 `check` | 分别验证公共契约与各游戏身份；`.tooling` 不实现游戏 `check`。 |
 | `npm run check:mcp` | 根 `tools/check-mcp.cjs` | 验证三个 stdio MCP 握手及规定的只读调用；不是目录检查。 |
+| `node tools/check-documentation.cjs` | 根 `tools/check-documentation.cjs` | 验证日常文档与归档的本地链接、从零教程入口；不检查游戏运行或外部 URL。 |
 | `npm run build:breakfast` | 早餐 `tools/build-wechatgame.cjs` | 本地发布构建，需 Creator 与早餐启动页扩展，不上传发布。 |
 | `npm run dev:cocos:breakfast` | 早餐 `tools/open-creator.cjs` | 打开早餐 Creator，脚本按自身位置定位工程；一次只受控一个 Creator。 |
 

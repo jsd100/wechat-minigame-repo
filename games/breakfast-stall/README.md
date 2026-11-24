@@ -2,6 +2,8 @@
 
 游戏 ID：`breakfast-stall`。本目录拥有完整 Cocos Creator 3.8.8 LTS 工程、源码、素材、存档、AppID、构建配置和产物；不是共享玩法包。
 
+首次安装或在新电脑运行，先按 [从零运行指南](../../docs/getting-started.md) 使用 GUI 完成导入、构建和微信模拟器验证。本文只记录早餐专属工程、命令与进阶验收。
+
 ## 工程与所有权
 
 - `assets/`：场景、玩法、素材及对应 `.meta`，脚本 UUID 与场景引用必须整体保留。
@@ -45,7 +47,9 @@ npm run dev:cocos --workspace=breakfast-stall
 
 `npm run check:mcp` 在根验证三个 stdio MCP 握手及只读调用。Creator MCP 另经 `http://127.0.0.1:3000/mcp` 访问，读取前核对 `cocos://project/info` 是本工程，不能仅凭端口连通判断正确工程。
 
-## 恢复与构建
+## 可选命令行与 MCP 恢复
+
+GUI 运行不要求 Node。以下命令仅用于自动验证、命令行构建或 AI/MCP 开发；Windows 使用命令行时，将 `COCOS_CREATOR_BIN` 设为实际的 Creator Windows 可执行文件，不能套用 macOS 路径。
 
 1. 在仓库根 `npm ci` 恢复工作区依赖。
 2. 安装并构建本工程扩展：
