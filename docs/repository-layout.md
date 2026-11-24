@@ -59,7 +59,7 @@
 
 ## 文档维护
 
-- 公共目录、命令或共享工具变化：更新本文、README、AGENTS 与环境说明。
+- 公共目录、命令或共享工具变化：更新本文、README、AGENTS 与环境说明；导航变化运行 `node tools/check-documentation.cjs`。
 - 公共安装或首次运行流程变化：更新 README 的导航、[从零运行指南](getting-started.md) 与 AGENTS；教程不复制到 AI 环境或排障手册。
 - 单个游戏玩法、素材、配置或验收变化：更新该游戏 README 与游戏记录，不要求同步所有公共文档。
 - AI/MCP 或凭证变化：只更新 `环境使用说明.md` 及对应模板说明。
