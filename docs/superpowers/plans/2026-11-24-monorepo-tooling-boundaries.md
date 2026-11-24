@@ -175,18 +175,18 @@ Expected: 路径正确、原公共接口保留，35/35 与真实类型检查通�
 - 纯测试恢复与 Creator 前置条件分别验证，不复制声明来冒充完整自举。
 - Creator 与微信只使用 `games/breakfast-stall/` 及其发布产物。
 
-- [ ] **Step 1: 干净源码副本验证**
+- [x] **Step 1: 干净源码副本验证**
 
 从最终提交的 Git 快照创建独立 checkout，恢复 npm 依赖；不复制 `node_modules/`、`.tooling/local/` 或 `temp/declarations/cc.d.ts`。先执行纯规则测试，证明无 Creator 缓存依赖；再按文档补充 Creator 声明，运行完整类型检查、公共与早餐检查。
 
-- [ ] **Step 2: 真实 Creator 与微信构建验收**
+- [x] **Step 2: 真实 Creator 与微信构建验收**
 
 读取 `cocos://project/info` 确认新工程及 `main` 场景；运行全部根检查、完整类型检查、三条 MCP 握手与 `npm run build:breakfast`。从新发布目录打开微信，复验帮助或设置一次核心交互，保存本轮截图和错误日志。
 
-- [ ] **Step 3: 独立整体审查与修复**
+- [x] **Step 3: 独立整体审查与修复**
 
 请独立审查者只读检查完整 diff，重点为公共/游戏边界、可复现性、锁文件和文档真值。Critical/Important 按测试先红后绿修复，Minor 记录延期，不重复无限审查。
 
-- [ ] **Step 4: 记录并提交**
+- [x] **Step 4: 记录并提交**
 
 将真实命令、测试数量、构建、交互证据、未覆盖真机与延期项写入验收记录。检查 `git diff --check`、版本库文件与工作树，提交：`test: 验证松耦合工具链与可复现验收`。

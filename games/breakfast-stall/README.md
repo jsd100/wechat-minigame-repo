@@ -41,7 +41,7 @@ npm run dev:cocos --workspace=breakfast-stall
 
 ### 工程与 MCP 检查
 
-`npm run check --workspace=breakfast-stall` 检查 Creator UUID、版本、AppID、启动页五文件和 `Breakfast Game` 组件的真实场景/元数据关联。公共布局检查不会代替这些早餐检查。
+`npm run check --workspace=breakfast-stall` 检查 Creator UUID、版本、AppID、启动页五文件和 `Breakfast Game` 组件的真实场景/元数据关联，并运行 `tools/tests/` 中的隔离回归用例。组件类型由脚本 `.meta` 的 UUID 按 Creator 编码规则派生；元数据与场景不一致时必须失败。公共布局检查不会代替这些早餐检查。
 
 `npm run check:mcp` 在根验证三个 stdio MCP 握手及只读调用。Creator MCP 另经 `http://127.0.0.1:3000/mcp` 访问，读取前核对 `cocos://project/info` 是本工程，不能仅凭端口连通判断正确工程。
 

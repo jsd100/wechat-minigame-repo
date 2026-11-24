@@ -5,7 +5,7 @@
     "build:wechatgame": "node tools/build-wechatgame.cjs",
     "test": "node tools/test-rules.cjs",
     "typecheck": "node tools/typecheck.cjs",
-    "check": "node tools/check-project.cjs",
+    "check": "node tools/check-project.cjs && node --test tools/tests/*.test.cjs",
     "dev:cocos": "node tools/open-creator.cjs"
   },
   "creator": {

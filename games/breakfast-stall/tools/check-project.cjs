@@ -20,11 +20,21 @@ for (const relative of [
 ]) assert.ok(existsSync(path.join(game, relative)), `missing breakfast project file ${relative}`);
 
 const scriptMeta = JSON.parse(read('assets/breakfast/runtime/BreakfastGame.ts.meta'));
+assert.ok(scriptMeta.uuid, 'BreakfastGame script meta must retain its UUID');
+assert.match(scriptMeta.uuid, /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/, 'BreakfastGame script meta UUID must be a canonical UUID');
+// Creator script UUIDs use compressUuid(uuid, true): retain the first five
+// hex characters, then encode each subsequent three as two base64 characters.
+const hex = scriptMeta.uuid.replaceAll('-', '');
+const base64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+let componentType = hex.slice(0, 5);
+for (let index = 5; index < hex.length; index += 3) {
+    const value = Number.parseInt(hex.slice(index, index + 3), 16);
+    componentType += base64[value >> 6] + base64[value & 63];
+}
 const scene = JSON.parse(read('assets/main.scene'));
 const gameNode = scene.find(item => item._name === 'Breakfast Game' && item.__type__ === 'cc.Node');
 assert.ok(gameNode, 'Breakfast Game node must exist');
 const component = gameNode._components.map(reference => scene[reference.__id__]);
-const scriptComponent = component.find(item => item?.__type__ === '7ab9fJX3ypFuK7Xmel041GX');
+const scriptComponent = component.find(item => item?.__type__ === componentType);
 assert.ok(scriptComponent, 'Breakfast Game component must reference its script meta UUID');
-assert.ok(scriptMeta.uuid, 'BreakfastGame script meta must retain its UUID');
 console.log('Breakfast project checks passed.');
