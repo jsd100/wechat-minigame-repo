@@ -4,7 +4,8 @@
   "scripts": {
     "build:wechatgame": "node tools/build-wechatgame.cjs",
     "test": "node tools/test-rules.cjs",
-    "typecheck": "node tools/typecheck.cjs"
+    "typecheck": "node tools/typecheck.cjs",
+    "check": "node tools/check-project.cjs"
   },
   "creator": {
     "version": "3.8.8"

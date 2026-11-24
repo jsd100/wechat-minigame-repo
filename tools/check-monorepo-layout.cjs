@@ -1,38 +1,18 @@
 const assert = require('node:assert/strict');
-const { existsSync, readFileSync } = require('node:fs');
+const { existsSync, readFileSync, readdirSync } = require('node:fs');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
 
-const root = path.resolve(__dirname, '..');
-const game = path.join(root, 'games/breakfast-stall');
-const has = (relative) => existsSync(path.join(root, relative));
+// Generic workspace contract. Game identity belongs to each game's own check.
+const root = path.resolve(process.argv[2] || path.resolve(__dirname, '..'));
 const read = (relative) => readFileSync(path.join(root, relative), 'utf8');
+const has = (relative) => existsSync(path.join(root, relative));
+const manifest = JSON.parse(read('package.json'));
+assert.equal(manifest.private, true, 'the workspace root must be private');
+assert.deepEqual(manifest.workspaces, ['games/*', '.tooling']);
+assert.equal(manifest.engines.node, '>=24 <25');
+assert.equal(manifest.devDependencies?.typescript, '5.9.3');
+assert.equal(has('project.config.json'), false, 'the repository root is not a WeChat runtime entry');
 
-for (const relative of [
-    'package.json', 'tsconfig.json', 'assets/main.scene', 'assets/main.scene.meta',
-    'assets/breakfast/core/rules.ts', 'assets/breakfast/core/rules.ts.meta',
-    'settings/cocos-creator-mcp.json', 'build.wechatgame.json', 'build.wechatgame.release.json',
-    'extensions/breakfast-startup/builder.js', 'extensions/breakfast-startup/hooks.js',
-    'extensions/breakfast-startup/package.json', 'extensions/breakfast-startup/breakfast-start.jpg',
-    'extensions/breakfast-startup/breakfast-start-art.jpg',
-]) assert.ok(existsSync(path.join(game, relative)), `missing games/breakfast-stall/${relative}`);
-assert.equal(has('cocos-game/package.json'), false, 'the old Creator manifest must not remain');
-const manifest = JSON.parse(read('games/breakfast-stall/package.json'));
-assert.equal(manifest.uuid, '971ca89b-52c5-4df6-833b-2fa2525ec12c');
-assert.equal(manifest.creator.version, '3.8.8');
-const config = JSON.parse(read('games/breakfast-stall/build.wechatgame.release.json'));
-assert.equal(config.outputName, 'wechatgame-breakfast-release');
-assert.equal(config.packages.wechatgame.appid, 'wx136b6cd4db8ee9c0');
-assert.match(read('games/breakfast-stall/assets/main.scene'), /7ab9fJX3ypFuK7Xmel041GX/);
-for (const directory of ['build', 'library', 'local', 'profiles', 'temp']) {
-    assert.match(read('.gitignore'), new RegExp(`^/games/\\*/${directory}/$`, 'm'));
-}
-const rootManifest = JSON.parse(read('package.json'));
-assert.equal(rootManifest.private, true);
-assert.deepEqual(rootManifest.workspaces, ['games/*', '.tooling']);
-assert.equal(rootManifest.engines.node, '>=24 <25');
-assert.equal(rootManifest.devDependencies.typescript, '5.9.3');
-assert.equal(has('package-lock.json'), true, 'the root npm lockfile must exist');
 const lock = JSON.parse(read('package-lock.json'));
 for (const [location, entry] of Object.entries(lock.packages)) {
     if (location.includes('node_modules/') && entry.version && !entry.link) {
@@ -40,34 +20,37 @@ for (const [location, entry] of Object.entries(lock.packages)) {
         assert.ok(entry.integrity, `${location} must pin its registry integrity`);
     }
 }
-const toolingManifest = JSON.parse(read('.tooling/package.json'));
-const launcher = read('.tooling/bin/mini-ai-mcp');
-assert.doesNotMatch(launcher, /"\$tooling_dir\/node_modules\/\$module"/);
-for (const [specifier, entry] of [
-    ['@weadmin/weixin-minigame-helper-mcp/mcp/index.js', 'mcp/index.js'],
-    ['@cloudbase/cloudbase-mcp/dist/cli.cjs', 'dist/cli.cjs'],
-]) {
-    const packageName = specifier.split('/').slice(0, 2).join('/');
-    const location = Object.keys(lock.packages).find((key) => key.endsWith(`node_modules/${packageName}`));
-    assert.ok(location, `${packageName} must be in the root npm lockfile`);
-    assert.equal(lock.packages[location].version, toolingManifest.dependencies[packageName]);
-    const resolved = execFileSync(process.execPath, [
-        '.tooling/bin/resolve-mcp-module.cjs', specifier,
-    ], { cwd: root, encoding: 'utf8' });
-    assert.equal(resolved, path.join(root, location, entry));
+const workspacePaths = ['', '.tooling'];
+const gamesRoot = path.join(root, 'games');
+if (existsSync(gamesRoot)) {
+    for (const entry of readdirSync(gamesRoot, { withFileTypes: true })) {
+        if (entry.isDirectory()) workspacePaths.push(`games/${entry.name}`);
+    }
 }
-assert.equal(has('project.config.json'), false, 'the invalid root WeChat entry must be removed');
-for (const relative of ['README.md', 'AGENTS.md', '环境使用说明.md', 'docs/开发排障与测试手册.md']) {
-    assert.ok(has(relative), `missing current guide ${relative}`);
-    const content = read(relative);
-    assert.match(content, /games\/breakfast-stall\//, `${relative} must use the game workspace`);
-    assert.equal(content.includes('cocos-game/'), false, `${relative} must not use the old Creator path`);
-    assert.equal(content.includes('.tooling/node_modules/.bin/tsc'), false, `${relative} must use the root TypeScript entry`);
+for (const path of workspacePaths) {
+    if (!has(`${path ? `${path}/` : ''}package.json`)) continue;
+    const source = JSON.parse(read(`${path ? `${path}/` : ''}package.json`));
+    const entry = lock.packages[path];
+    assert.ok(entry, `${path || '<root>'} must have a lockfile workspace entry`);
+    for (const key of ['dependencies', 'devDependencies']) {
+        assert.deepEqual(entry[key] || {}, source[key] || {}, `${path || '<root>'} ${key} must match its manifest`);
+    }
 }
-for (const relative of ['README.md', '环境使用说明.md', 'docs/开发排障与测试手册.md']) {
-    const content = read(relative);
-    assert.match(content, /npm test/);
-    assert.match(content, /npm run typecheck/);
-    assert.match(content, /npm run build:breakfast/);
+for (const directory of ['build', 'library', 'local', 'profiles', 'temp']) {
+    assert.match(read('.gitignore'), new RegExp(`^/games/\\*/${directory}/$`, 'm'));
 }
-console.log('Monorepo layout checks passed.');
+const gamesDir = path.join(root, 'games');
+const games = existsSync(gamesDir)
+    ? readdirSync(gamesDir, { withFileTypes: true }).filter(entry => entry.isDirectory()).map(entry => entry.name).sort()
+    : [];
+assert.ok(games.length > 0, 'at least one game workspace is required');
+const outputNames = new Set();
+for (const game of games) {
+    const gameManifest = JSON.parse(read(`games/${game}/package.json`));
+    assert.ok(gameManifest.scripts?.check, `games/${game} must own its check script`);
+    const config = JSON.parse(read(`games/${game}/build.wechatgame.release.json`));
+    assert.ok(config.outputName, `games/${game} must declare an outputName`);
+    assert.equal(outputNames.has(config.outputName), false, `duplicate WeChat output name: ${config.outputName}`);
+    outputNames.add(config.outputName);
+}
+console.log('Monorepo generic layout checks passed.');

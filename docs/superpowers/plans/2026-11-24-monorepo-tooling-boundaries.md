@@ -49,23 +49,23 @@
 - 根 `check` → `npm run check:layout && npm run check --workspaces --if-present`。
 - 根 `check:mcp` → `node tools/check-mcp.cjs minigame cloudbase wechatide`。
 
-- [ ] **Step 1: 写公共布局与早餐身份的失败检查**
+- [x] **Step 1: 写公共布局与早餐身份的失败检查**
 
 在隔离临时目录创建公共布局 fixture，不包含早餐资源；断言公共检查只验证 workspace、独立输出名、忽略规则、游戏 `check` 脚本和根锁完整性。先确认旧脚本因固定早餐路径/AppID 而不符合边界。
 
 在早餐检查中解析 `package.json`、构建配置、`assets/main.scene` 和 `BreakfastGame.ts.meta`，要求 `Breakfast Game` 节点组件的压缩 UUID 来自该元数据；检查五个启动页文件。先确认旧公共脚本混淆职责，且单纯文本匹配无法验证组件归属。
 
-- [ ] **Step 2: 实现职责分离并验证第二工作区**
+- [x] **Step 2: 实现职责分离并验证第二工作区**
 
 收窄公共布局脚本；新增早餐 `tools/check-project.cjs` 与游戏 `check`。根测试/类型改为遍历 workspaces，新增上述稳定检查入口。用只读复制的方式运行真实根检查及早餐检查。
 
 在测试临时目录新增最小 `games/other/package.json`（`test`、`typecheck` 和 `check` 均写入记录文件），运行根命令；断言第二工作区确实执行。临时 fixture 不提交、不成为产品依赖。
 
-- [ ] **Step 3: 移入共享 MCP 检查并验证**
+- [x] **Step 3: 移入共享 MCP 检查并验证**
 
 把已经验证过的 stdio 握手驱动整理为根 `tools/check-mcp.cjs`，根目录由 `__dirname` 定位，输出报告到 `.tooling/local/checks/`。运行 `npm run check:mcp`；Expected: 三个 initialize/tools 成功，微信 `project_list`、CloudBase `auth(status)` 只读调用成功。
 
-- [ ] **Step 4: 运行检查并提交**
+- [x] **Step 4: 运行检查并提交**
 
 Run: `npm run check:layout && npm run check --workspace=breakfast-stall && npm run check:mcp && npm test && npm run typecheck`.
 Expected: 全部退出 0，早餐 35/35；文档导航尚未在本任务更新，不据此宣称完整验收。
