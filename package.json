@@ -9,7 +9,7 @@
     "check:layout": "node tools/check-monorepo-layout.cjs",
     "check:mcp": "node tools/check-mcp.cjs minigame cloudbase wechatide",
     "build:breakfast": "npm run build:wechatgame --workspace=breakfast-stall",
-    "dev:cocos:breakfast": "open -a \"$PWD/.tooling/apps/CocosCreator.app\" --args --project \"$PWD/games/breakfast-stall\""
+    "dev:cocos:breakfast": "npm run dev:cocos --workspace=breakfast-stall"
   },
   "workspaces": [
     "games/*",

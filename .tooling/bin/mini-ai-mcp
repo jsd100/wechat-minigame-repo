@@ -23,7 +23,7 @@ case "${1:-}" in
             echo "Copy the MCP config from WeChat DevTools Settings > Security to set the MCP token." >&2
             exit 1
         fi
-        exec /usr/local/bin/wechatide mcp "--token=$token"
+        exec "${WECHAT_IDE_BIN:-/usr/local/bin/wechatide}" mcp "--token=$token"
         ;;
     *)
         echo "Usage: mini-ai-mcp minigame|cloudbase|wechatide" >&2

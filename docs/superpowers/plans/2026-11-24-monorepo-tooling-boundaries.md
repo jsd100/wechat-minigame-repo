@@ -121,15 +121,15 @@ Expected: 真实 Cocos 类型检查退出 0；删除隔离副本中的声明后�
 - 微信 CLI 默认 `/usr/local/bin/wechatide`，可用 `WECHAT_IDE_BIN` 覆盖；Token 读取规则不变。
 - 素材生成注释改为 `games/breakfast-stall/tools/bake-food-contours.py`，只改注释，不重算素材。
 
-- [ ] **Step 1: 用无害替身写可移植性失败测试**
+- [x] **Step 1: 用无害替身写可移植性失败测试**
 
 从 `/` 调用启动器，使用临时目录中的假 Creator/微信 CLI 记录 argv，断言工程路径来自脚本位置、微信 override 生效。先确认根 `$PWD` 和固定微信路径的缺陷；不启动真实 Creator 或第二个受控实例。
 
-- [ ] **Step 2: 实现启动器与环境覆盖**
+- [x] **Step 2: 实现启动器与环境覆盖**
 
 根别名转发游戏内 Creator 启动器；微信 CLI 使用 `WECHAT_IDE_BIN`。保持 Token、Node fallback 和模块解析不变。更新素材来源注释。
 
-- [ ] **Step 3: 验证并提交**
+- [x] **Step 3: 验证并提交**
 
 Run: 替身 argv 检查、根 `npm test`、`npm run typecheck`、`.tooling/bin/mini-ai-mcp` 无参数用法检查。
 Expected: 路径正确、原公共接口保留，35/35 与真实类型检查通过。
