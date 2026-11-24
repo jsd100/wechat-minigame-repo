@@ -1,6 +1,6 @@
 # 多游戏目录迁移说明
 
-## 当前入口
+## 历史路径映射
 
 2026-11-23 起，《早点凑一单》的唯一活动 Creator 工程为 `games/breakfast-stall/`。游戏 ID 为 `breakfast-stall`，玩家标题、AppID、玩法、存档键、Creator UUID、资源 `.meta` 和早餐启动页均保持独立。
 
@@ -21,9 +21,11 @@
 
 资源与启动页文件已在任务 1 核对 65 项哈希一致。构建、MCP、微信模拟器和旧生成物清理的实际结果以 [本次验收记录](superpowers/verification/2026-11-23-minigame-monorepo.md) 为准，未完成项不由本文推断。
 
-## 新增游戏
+## 新增游戏（历史说明）
 
-1. 在 `games/<game-id>/` 创建独立工程与 `package.json`，将新游戏加入根脚本。
+以下是迁移时的新增游戏约定。当前长期契约以 [目录与开发工具契约](repository-layout.md) 为准，具体步骤以目标游戏 README 为准，不再以本文件作为新增游戏唯一入口。
+
+1. 在 `games/<game-id>/` 创建独立工程与 `package.json`，按当前根命令约定提供游戏自有脚本。
 2. 分别配置 Creator UUID、AppID、素材、存档、构建配置和独立产物。
 3. 从仓库根安装开发工具；游戏运行时需要的依赖留在游戏自己的工程中。
 4. 一次只打开一个受控 Creator 工程，微信只传新游戏的实际构建目录。
@@ -31,4 +33,4 @@
 
 ## 历史资料
 
-旧设计、计划与验收记录中的 `cocos-game/` 是当时真实路径，不批量改写。现行操作以 [README](../README.md)、[环境使用说明](../环境使用说明.md) 和 [开发排障与测试手册](开发排障与测试手册.md) 为准；迁移执行过程见 [执行状态](monorepo-execution.md)。
+旧设计、计划与验收记录中的 `cocos-game/` 是当时真实路径，不批量改写。现行操作以 [README](../README.md)、[长期目录契约](repository-layout.md) 和目标游戏 README 为准；迁移执行过程见 [历史执行台账](monorepo-execution.md)。
