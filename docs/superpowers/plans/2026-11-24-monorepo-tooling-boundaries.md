@@ -85,24 +85,24 @@ Expected: 全部退出 0，早餐 35/35；文档导航尚未在本任务更新�
 - 完整类型检查在缺少 Creator 声明时给出明确前置条件。
 - 所有包装器分别处理 `error`、`signal` 和退出码。
 
-- [ ] **Step 1: 创建无声明的失败测试与异常路径测试**
+- [x] **Step 1: 创建无声明的失败测试与异常路径测试**
 
 在隔离副本复制受控源码/清单/脚本，不复制 `temp/`、`node_modules/` 或 `.tooling/local/`，按根清单安装 npm 依赖。先运行当前纯测试，Expected: 因 `cc.d.ts` 不存在而失败。
 
 以不存在的 TypeScript 可执行文件和受控信号替身调用包装器，先确认当前代码丢失启动错误/信号诊断；测试临时目录清理用可控异常触发。
 
-- [ ] **Step 2: 添加最小测试声明并修正包装器**
+- [x] **Step 2: 添加最小测试声明并修正包装器**
 
 在早餐 `tests/types/cc.d.ts` 定义实际测试所需的几何类型，替换测试编译输入中的完整 Creator 声明。测试发现、编译和运行放入 `try/finally`，统一报告子进程错误和信号；完整类型检查先验证声明存在。
 
-- [ ] **Step 3: 验证纯测试自举与真实类型检查**
+- [x] **Step 3: 验证纯测试自举与真实类型检查**
 
 Run: 在隔离副本从根目录执行 `npm ci --ignore-scripts --no-audit --no-fund`，随后 `npm test`。
 Expected: 没有 Creator 或 `temp/declarations/cc.d.ts`，35/35 通过，临时编译目录清理。
 Run: 当前仓库 `npm run typecheck`。
 Expected: 真实 Cocos 类型检查退出 0；删除隔离副本中的声明后类型检查给出“先打开 Creator 完成导入”而不是 TS6053。
 
-- [ ] **Step 4: 提交**
+- [x] **Step 4: 提交**
 
 提交：`test: 让早餐规则测试脱离 Creator 缓存`。
 

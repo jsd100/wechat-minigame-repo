@@ -33,8 +33,12 @@ if (result.error) {
 }
 
 // Cocos Creator 3.8 uses 36 as its successful build exit code.
+if (result.signal) {
+    console.error(`微信小游戏构建被信号 ${result.signal} 终止。`);
+    process.exit(1);
+}
 if (result.status !== 36) {
-    console.error(`微信小游戏构建失败（Cocos ${result.signal || `退出码 ${result.status}`}）。`);
+    console.error(`微信小游戏构建失败（Cocos 退出码 ${result.status}）。`);
     process.exit(result.status || 1);
 }
 
