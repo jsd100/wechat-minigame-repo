@@ -49,7 +49,7 @@ npm run dev:cocos --workspace=breakfast-stall
 
 ## 可选命令行与 MCP 恢复
 
-GUI 运行不要求 Node。以下命令仅用于自动验证、命令行构建或 AI/MCP 开发；Windows 使用命令行时，将 `COCOS_CREATOR_BIN` 设为实际的 Creator Windows 可执行文件，不能套用 macOS 路径。
+GUI 运行不要求 Node。以下命令仅用于自动验证、命令行构建或 AI/MCP 开发，以 macOS / Linux shell 为例。**Windows PowerShell 的依赖与扩展恢复命令见 [可选环境说明](../../环境使用说明.md#2-cocos-creator-mcp-扩展)，不要直接复制下面的 Bash 变量写法。** Windows 使用命令行时，将 `COCOS_CREATOR_BIN` 设为实际的 Creator Windows 可执行文件，不能套用 macOS 路径。
 
 1. 在仓库根 `npm ci` 恢复工作区依赖。
 2. 安装并构建本工程扩展：

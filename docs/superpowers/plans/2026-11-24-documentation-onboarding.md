@@ -19,7 +19,7 @@
 - macOS 与常规 Windows 10/11 分开写，不增加 WSL 分支。
 - `docs/superpowers/` 不移动、不改写历史正文，仅修复归档移动直接造成的两个相对链接；Cocos 扩展自带文档不动；AI 资源手册保留。
 - 不删除仍有用途的资料；只归档两份迁移说明并修复移动造成的相对链接。
-- Windows 没有本机实测时不得宣称通过；macOS 以本轮真实构建与交互为证据。
+- Windows 没有本机实测时不得宣称通过；macOS 干净副本 GUI 与微信复验经用户授权停止，只记录实际完成的静态与工程验证。
 - 不上传、提审、发布、写 CloudBase、清存档或改真实账号配置。
 
 ## Review Focus
@@ -124,21 +124,21 @@ README 链接教程、早餐说明、AI 环境、排障和历史入口；早餐 
 - Local only: `.tooling/local/checks/`（忽略）
 
 **Interfaces:**
-- macOS 证据必须来自本轮 Creator/微信运行；Windows 明确未实测。
+- 不得把历史 macOS 结果或自动化成功当作本轮干净副本 GUI 证据；Windows 明确未实测。
 - 最终验收不包含上传、提审、发布或真机结论。
 
-- [ ] **Step 1: 核对 Creator 工程与 macOS GUI 构建结果**
+- [-] **Step 1: 核对 Creator 工程与 macOS GUI 构建结果（用户授权停止；未完成干净副本构建）**
 
 创建不含 `node_modules/`、MCP `dist/`、旧 `profiles/` 和旧构建产物的干净副本，在 Creator 中导入该副本；读取 `cocos://project/info` 确认干净工程及 `main` 场景。通过 `builder_manage` 打开构建面板，核对 GUI 的平台、输出名和 `build` 目录，再实际构建发布包。未配置 MCP 时按教程禁用/忽略该可选扩展，确认早餐启动页启用。记录 GUI 路径与命令行构建的区别，不修改受控游戏配置。
 
-- [ ] **Step 2: 从新产物目录复验微信帮助流程**
+- [-] **Step 2: 从新产物目录复验微信帮助流程（依赖 Step 1 新产物；未执行）**
 
 使用 `wechatide-skill` 先检查状态，再只打开实际发布目录。按教程点问号、米糕、茶叶蛋，验证暂存、A 单打包和自动补入 B 单，保存本轮截图和错误过滤日志；不清存档、不改设置。
 
-- [ ] **Step 3: 完整测试与独立审查**
+- [x] **Step 3: 完整测试与独立审查**
 
 Run: `node tools/check-documentation.cjs && npm test && npm run typecheck && npm run check`。请独立审阅者只读检查完整 diff，重点为新手可达性、双平台措辞、归档链接和范围；Critical/Important 按证据修复，Minor 记录延期，不重复无限审查。
 
-- [ ] **Step 4: 记录真实范围并提交**
+- [x] **Step 4: 记录真实范围并提交**
 
-写明 macOS 干净副本实际构建/交互、Windows 未实测、文档检查和测试数量、延期项。检查 `git diff --check`、版本库文件与工作树，提交：`docs: 验证从零运行教程与文档职责`。
+写明 macOS 干净副本 GUI 与微信复验未完成、Windows 未实测、文档检查和测试数量、延期项。检查 `git diff --check`、版本库文件与工作树，提交：`docs: 验证从零运行教程与文档职责`。

@@ -6,7 +6,7 @@
 
 - 主路径全部使用桌面界面，**不要求先安装 Node.js、npm、MCP、Skills 或配置 Token**。
 - 微信登录账号需要拥有本项目小游戏 AppID 的开发权限；没有权限时请先联系项目管理员，不要换成其他 AppID。
-- Windows 步骤依据官方资料和项目配置编写，当前未进行 Windows 本机实测；macOS 有实际构建与模拟器验证。
+- Windows 步骤依据官方资料和项目配置编写，当前未进行 Windows 本机实测。macOS 曾在已配置工程完成过构建与模拟器验证，但本次文档整理未完成干净副本的 GUI 复验，详见 [验证范围](superpowers/verification/2026-11-24-documentation-onboarding.md)。
 - 本教程只覆盖本地模拟器，不包含真机、上传、提审、发布或 CloudBase。
 
 ## 1. 准备三个工具与账号
@@ -63,14 +63,14 @@ cd wechat-minigame-repo
    | 项目 | 应保持的值 |
    | --- | --- |
    | 发布平台 | 微信小游戏 |
-   | AppID | 使用构建界面从项目读取的现有小游戏 AppID，不替换 |
+   | AppID | `wx136b6cd4db8ee9c0`；若界面为空，从此值核对填入 |
    | 屏幕方向 | 竖屏（Portrait） |
    | 输出名称 | `wechatgame-breakfast-release` |
    | 构建输出目录 | 工程内的 `build` |
    | 初始场景 | `main` |
    | 启动页扩展 | `breakfast-startup` 已启用 |
 
-3. 点击「构建」，等待完成。不要手动重建 `build.wechatgame.*.json`；这些 JSON 主要供命令行构建，GUI 构建任务由 Creator 保存在本机配置中。
+3. 点击「构建」，等待完成。项目现有 AppID 记录在 `games/breakfast-stall/build.wechatgame.release.json` 的 `packages.wechatgame.appid`；首次构建界面为空时可据此核对填入，**不要使用测试号或其他 AppID**。不要手动重建 `build.wechatgame.*.json`；这些 JSON 主要供命令行构建，GUI 构建任务由 Creator 保存在本机配置中。
 4. 构建成功后，工程目录下应生成：
 
    ```text

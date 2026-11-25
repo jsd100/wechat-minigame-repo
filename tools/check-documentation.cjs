@@ -36,6 +36,19 @@ for (const relative of tracked) {
     }
 }
 
+// Only these two historical navigation targets changed during the archive move.
+// Do not validate old source paths or other historical facts in these documents.
+for (const [relative, target] of [
+    ['docs/superpowers/verification/2026-11-20-breakfast-stall-sample.md', '../../archive/monorepo-migration.md'],
+    ['docs/superpowers/specs/2026-11-23-minigame-monorepo-design.md', '../../archive/monorepo-execution.md'],
+]) {
+    const file = path.join(root, relative);
+    const source = readFileSync(file, 'utf8').replace(/```[\s\S]*?```/g, '');
+    if (!source.includes(`](${target})`)) failures.push(`${relative}: archive navigation must target ${target}`);
+    const resolved = path.resolve(path.dirname(file), target);
+    if (!existsSync(resolved) || !statSync(resolved).isFile()) failures.push(`${relative}: missing archive target ${target}`);
+}
+
 if (failures.length) {
     console.error(failures.join('\n'));
     process.exit(1);
